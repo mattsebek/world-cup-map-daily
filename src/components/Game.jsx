@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import * as d3 from "d3";
 import { haversineMiles } from "../lib/util.js";
 import CAPITALS from "../data/capitals.json";
@@ -6,49 +6,133 @@ import WORLD from "../data/world.json";
 import Globe from "./Globe.jsx";
 import ClueCard from "./ClueCard.jsx";
 import RevealPanel from "./RevealPanel.jsx";
+import { VisualEvidence } from "./VisualEvidence.jsx";
 
 function Game({questions, onFinish, reduced}){
-  const [qi,setQi]=useState(0);
-  const [phase,setPhase]=useState("guessing");
-  const [guesses,setGuesses]=useState([]);
-  const [toast,setToast]=useState(null);
-  const q=questions[qi];
-  const miniTotal=guesses.reduce((s,g)=>s+g.distance,0);
+  const [qi, setQi] = useState(0);
+  const [phase, setPhase] = useState("guessing");
+  const [guesses, setGuesses] = useState([]);
+  const [displaySec, setDisplaySec] = useState(0);
+  const [toast, setToast] = useState(null);
 
-  useEffect(()=>{
-    const h=()=>{ setToast("Tap a country to guess."); setTimeout(()=>setToast(null),1400); };
-    document.addEventListener("wcmd-outside",h); return ()=>document.removeEventListener("wcmd-outside",h);
-  },[]);
+  // Timer refs
+  const accRef = useRef(0);
+  const tickRef = useRef(Date.now());
+  const pausedRef = useRef(false);
+  const caseStartRef = useRef(0);
+  const guessesRef = useRef([]);
 
-  const onGuess=(iso)=>{
-    if(phase!=="guessing") return;
-    const a=CAPITALS[q.answer], gc=CAPITALS[iso];
+  const q = questions[qi];
+  const miniScore = guessesRef.current.reduce((s,g) => s + g.caseScore, 0);
+
+  // Timer display tick
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (!pausedRef.current) {
+        setDisplaySec(Math.floor(accRef.current + (Date.now() - tickRef.current) / 1000));
+      }
+    }, 250);
+    return () => clearInterval(id);
+  }, []);
+
+  const pauseTimer = useCallback(() => {
+    if (!pausedRef.current) {
+      accRef.current += (Date.now() - tickRef.current) / 1000;
+      pausedRef.current = true;
+    }
+  }, []);
+
+  const resumeTimer = useCallback(() => {
+    if (pausedRef.current) {
+      tickRef.current = Date.now();
+      pausedRef.current = false;
+    }
+  }, []);
+
+  const getElapsedSec = useCallback(() => {
+    if (pausedRef.current) return accRef.current;
+    return accRef.current + (Date.now() - tickRef.current) / 1000;
+  }, []);
+
+  useEffect(() => {
+    const h = () => { setToast("Tap a country to submit your trace."); setTimeout(() => setToast(null), 1400); };
+    document.addEventListener("wcmd-outside", h);
+    return () => document.removeEventListener("wcmd-outside", h);
+  }, []);
+
+  const onGuess = (iso) => {
+    if (phase !== "guessing") return;
+    const caseTimeSec = Math.max(1, Math.round(getElapsedSec() - caseStartRef.current));
+    pauseTimer();
+
+    const a = CAPITALS[q.answer], gc = CAPITALS[iso];
     let dist;
-    if(iso===q.answer) dist=0;
-    else if(a&&gc) dist=haversineMiles(a.lat,a.lng,gc.lat,gc.lng);
-    else { const cf=WORLD.features.find(f=>f.id===iso); const c=cf?d3.geoCentroid(cf):null; dist=(a&&c)?haversineMiles(a.lat,a.lng,c[1],c[0]):9999; }
-    setGuesses(g=>[...g,{answer:q.answer,guess:iso,distance:dist,isExact:iso===q.answer}]);
+    if (iso === q.answer) dist = 0;
+    else if (a && gc) dist = haversineMiles(a.lat, a.lng, gc.lat, gc.lng);
+    else {
+      const cf = WORLD.features.find(f => f.id === iso);
+      const c = cf ? d3.geoCentroid(cf) : null;
+      dist = (a && c) ? haversineMiles(a.lat, a.lng, c[1], c[0]) : 9999;
+    }
+
+    const timePenalty = caseTimeSec * 10;
+    const newGuess = {
+      answer: q.answer,
+      guess: iso,
+      distance: dist,
+      isExact: iso === q.answer,
+      caseTime: caseTimeSec,
+      timePenalty,
+      caseScore: dist + timePenalty,
+    };
+    const updated = [...guessesRef.current, newGuess];
+    guessesRef.current = updated;
+    setGuesses(updated);
     setPhase("revealed");
   };
-  const next=()=>{ if(qi<questions.length-1){ setQi(qi+1); setPhase("guessing"); } else onFinish(guesses); };
-  const cur=guesses[qi];
+
+  const next = () => {
+    if (qi < questions.length - 1) {
+      caseStartRef.current = accRef.current;
+      resumeTimer();
+      setQi(qi + 1);
+      setPhase("guessing");
+    } else {
+      onFinish(guessesRef.current, Math.round(accRef.current));
+    }
+  };
+
+  const cur = guesses[qi];
 
   return (
     <div className="game">
-      <div className="progress">{questions.map((_,i)=><span key={i} className={"pdot"+(i<qi?" done":"")+(i===qi?" now":"")}/>)}</div>
+      <div className="progress">{questions.map((_,i) => (
+        <span key={i} className={"pdot"+(i<qi?" done":"")+(i===qi?" now":"")}/>
+      ))}</div>
       <div className="gamegrid">
         <div className="leftpane">
-          <ClueCard q={q} miniTotal={miniTotal}/>
+          <ClueCard q={q} miniScore={miniScore} elapsed={displaySec}/>
+          <VisualEvidence question={q}/>
         </div>
         <div className="rightpane">
           <Globe phase={phase} answerISO={q.answer} guessISO={cur?.guess} onGuess={onGuess} reduced={reduced}/>
         </div>
       </div>
-      {phase==="revealed" && cur &&
+      {phase === "revealed" && cur &&
         <div className="revealsheet">
           <div className="revealsheet-inner">
             <div className="sheetgrab"/>
-            <RevealPanel q={q} guessISO={cur.guess} distance={cur.distance} onNext={next} last={qi===questions.length-1} reduced={reduced}/>
+            <RevealPanel
+              q={q}
+              guessISO={cur.guess}
+              distance={cur.distance}
+              caseTime={cur.caseTime}
+              timePenalty={cur.timePenalty}
+              caseScore={cur.caseScore}
+              onNext={next}
+              last={qi === questions.length - 1}
+              reduced={reduced}
+            />
           </div>
         </div>}
       {toast && <div className="toast">{toast}</div>}

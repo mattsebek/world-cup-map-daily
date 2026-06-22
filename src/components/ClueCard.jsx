@@ -1,16 +1,22 @@
-import { fmt } from "../lib/util.js";
+import { fmt, fmtTime } from "../lib/util.js";
 
 const CLUE_META = {
-  player:{label:"Player",icon:"◆"}, history:{label:"World Cup history",icon:"★"},
-  geography:{label:"Geography",icon:"⬢"}, culture:{label:"Culture",icon:"♪"},
+  player:   {label:"Player File",       icon:"◆"},
+  history:  {label:"Tournament Record", icon:"★"},
+  geography:{label:"Geographic Intel",  icon:"⬢"},
+  culture:  {label:"Culture Signal",    icon:"♪"},
 };
-function ClueCard({q, miniTotal}){
+
+function ClueCard({q, miniScore, elapsed}){
+  const warn = elapsed >= 120;
+  const urgent = elapsed >= 240;
   return (
     <div className="cluecard">
       <div className="cluetop">
-        <span className="counter">{q.n} <i>of</i> 5</span>
+        <span className="counter">Case <b>{q.n}</b> <i>of 5</i></span>
         <span className={"diff "+q.difficulty.toLowerCase()}>{q.difficulty}</span>
       </div>
+      {q.codename && <div className="codename">"{q.codename}"</div>}
       <div className="clues">
         {q.clues.map((c,i)=>(
           <div className="clue" key={i}>
@@ -20,8 +26,11 @@ function ClueCard({q, miniTotal}){
         ))}
       </div>
       <div className="cluefoot">
-        <span className="instr">Tap the country on the globe</span>
-        <span className="runtot">Total so far <b>{fmt(miniTotal)} mi</b></span>
+        <span className={`mission-clock${warn?" warn":""}${urgent?" urgent":""}`}>
+          <span className="clock-label">Mission</span>
+          <span className="clock-time">{fmtTime(elapsed)}</span>
+        </span>
+        <span className="runtot">Score <b>{fmt(miniScore)}</b></span>
       </div>
     </div>
   );

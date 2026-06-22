@@ -4,10 +4,11 @@ import { fmt } from "../lib/util.js";
 function Stats({history, onBack}){
   if(!history || history.length===0)
     return <div className="board"><div className="bhead"><h2>My stats</h2></div><div className="empty">Play today’s round to start your streak.</div><button className="textlink" onClick={onBack}>Back</button></div>;
-  const best=Math.min(...history.map(h=>h.total));
-  const avg=Math.round(history.reduce((s,h)=>s+h.total,0)/history.length);
+  const scoreOf=h=>h.finalScore??h.total;
+  const best=Math.min(...history.map(scoreOf));
+  const avg=Math.round(history.reduce((s,h)=>s+scoreOf(h),0)/history.length);
   const exact=history.reduce((s,h)=>s+h.exact,0);
-  const data=history.slice(-10).map((h,i)=>({name:`R${i+1}`, score:h.total}));
+  const data=history.slice(-10).map((h,i)=>({name:`R${i+1}`, score:scoreOf(h)}));
   return (
     <div className="board">
       <div className="bhead"><h2>My stats</h2></div>

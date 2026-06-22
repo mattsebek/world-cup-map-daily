@@ -52,6 +52,18 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .homeglobe-canvas{position:absolute;left:50%;bottom:-50vh;transform:translateX(-50%);width:100vh;height:100vh}
 .home>:not(.homeglobe){position:relative;z-index:1}
 
+/* visual evidence */
+.ve-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.ve-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.ve-card-label{font-family:'Space Grotesk';font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--turq);font-weight:700}
+.ve-card-note{font-size:10.5px;color:var(--muted);font-style:italic;line-height:1.3}
+.ve-flag-frame{position:relative;border-radius:7px;overflow:hidden;aspect-ratio:3/2;background:rgba(0,0,0,.3)}
+.ve-flag-img{width:100%;height:100%;object-fit:cover;display:block}
+.ve-flag-overlay{position:absolute;right:0;top:0;bottom:0;background:linear-gradient(to right,transparent,var(--surface) 85%)}
+.ve-flag-placeholder{width:100%;height:100%;background:var(--line)}
+.ve-kit-wrap{display:flex;justify-content:center;padding:4px 0}
+.ve-kit-svg{width:60px;height:60px;drop-shadow:0 2px 8px rgba(0,0,0,.5)}
+
 /* game */
 .progress{display:flex;gap:7px;justify-content:center;margin:2px 0 16px}
 .pdot{width:34px;height:5px;border-radius:3px;background:rgba(255,255,255,.12);transition:.3s}
@@ -71,8 +83,15 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .ctype{display:flex;align-items:center;gap:6px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--turq);font-weight:600;font-family:'Space Grotesk'}
 .ctype b{color:var(--coral)}
 .clue p{margin:4px 0 0;font-size:14px;line-height:1.5;color:#e2e7f6}
+.codename{font-size:12px;color:var(--turq);font-style:italic;margin:-4px 0 10px;opacity:.85}
 .cluefoot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
 .instr{color:var(--turq)}.runtot b{color:var(--white);font-family:'Space Grotesk'}
+.mission-clock{display:flex;align-items:center;gap:6px;font-family:'Space Grotesk'}
+.clock-label{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.clock-time{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--white);letter-spacing:.04em}
+.mission-clock.warn .clock-time{color:var(--lime)}
+.mission-clock.urgent .clock-time{color:var(--coral);animation:pulse-clock 1s ease-in-out infinite}
+@keyframes pulse-clock{0%,100%{opacity:1}50%{opacity:.6}}
 
 .mapwrap{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:radial-gradient(130% 120% at 50% -10%, #101a44 0%, #0a0f2e 50%, #070a20 100%)}
 .globe{display:block;width:100%;height:auto;touch-action:none;cursor:grab;transition:transform .45s cubic-bezier(.2,.9,.3,1)}
@@ -102,6 +121,13 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .selrow select{background:#0a1030;color:var(--white);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-family:inherit;font-size:12.5px;max-width:220px}
 
 /* reveal */
+.case-closed-stamp{display:inline-block;font-family:'Space Grotesk';font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--green);border:1px solid rgba(31,209,102,.4);border-radius:6px;padding:3px 8px;margin-bottom:10px}
+.case-score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.cs-item{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:9px 10px;text-align:center}
+.cs-label{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.cs-value{font-family:'Space Grotesk';font-weight:700;font-size:15px}
+.cs-penalty{color:var(--coral)}
+.cs-total{color:var(--turq)}
 .reveal{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;animation:slideup .35s ease}
 @keyframes slideup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .revealhead{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--line)}
@@ -119,6 +145,14 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .next{width:100%;font-family:'Space Grotesk';font-weight:700;font-size:15px;padding:13px;border-radius:12px;background:var(--turq);color:#04121b;transition:transform .15s}
 .next:hover{transform:translateY(-1px)}
 
+/* score breakdown */
+.score-breakdown{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:4px 0 14px}
+.sb-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;padding:5px 0;color:var(--muted)}
+.sb-row span:last-child{font-family:'Space Grotesk';font-weight:600;color:var(--white)}
+.sb-penalty span:last-child{color:var(--coral)}
+.sb-final{border-top:1px solid var(--line);margin-top:5px;padding-top:10px;color:var(--white);font-weight:600}
+.sb-final span:last-child{font-size:15px;color:var(--turq)}
+
 /* results */
 .results{max-width:560px;margin:0 auto}
 .rhero{text-align:center;padding:18px 0 8px}
@@ -132,7 +166,7 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .chip.green{color:var(--green);border-color:rgba(31,209,102,.35)}
 .chip.turq{color:var(--turq);border-color:rgba(0,240,216,.35)}
 .restable{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:6px 0 16px}
-.rthead,.rtrow{display:grid;grid-template-columns:28px 1fr 1fr auto;gap:8px;padding:11px 14px;align-items:center;font-size:13px}
+.rthead,.rtrow{display:grid;grid-template-columns:24px 1fr 1fr auto auto auto;gap:6px;padding:10px 14px;align-items:center;font-size:13px}
 .rthead{background:rgba(255,255,255,.04);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-family:'Space Grotesk'}
 .rtrow{border-top:1px solid var(--line)}
 .ra{text-align:right;font-family:'Space Grotesk';font-weight:600}
