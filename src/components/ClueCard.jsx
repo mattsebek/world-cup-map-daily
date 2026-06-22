@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { fmt, fmtTime } from "../lib/util.js";
 
 const CLUE_META = {
@@ -102,13 +102,13 @@ function ClueTextCard({ clue }) {
   );
 }
 
-function Carousel({ cards }) {
+function Carousel({ cards, resetKey }) {
   const [idx, setIdx] = useState(0);
   const touchStartX = useRef(null);
   const touchStartY = useRef(null);
 
-  // Reset to first card when cards change (new question)
-  useEffect(() => { setIdx(0); }, [cards]);
+  // Reset to first card only when the question changes (resetKey = q.n)
+  useEffect(() => { setIdx(0); }, [resetKey]);
 
   const prev = useCallback(() => setIdx(i => Math.max(0, i - 1)), []);
   const next = useCallback(() => setIdx(i => Math.min(cards.length - 1, i + 1)), [cards.length]);
@@ -153,11 +153,11 @@ function ClueCard({q, miniScore, elapsed}){
   const warn = elapsed >= 120;
   const urgent = elapsed >= 240;
 
-  const cards = [
+  const cards = useMemo(() => [
     ...q.clues.slice(0, 3).map(c => ({ kind: "clue", data: c })),
     ...(FLAG_COLORS[q.answer]?.length ? [{ kind: "flag", colors: FLAG_COLORS[q.answer] }] : []),
     ...(STAR_PLAYERS[q.answer] ? [{ kind: "player", iso: q.answer }] : []),
-  ];
+  ], [q.n]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className="cluecard">
@@ -169,7 +169,7 @@ function ClueCard({q, miniScore, elapsed}){
         </span>
         <span className="runtot">{fmt(miniScore)}</span>
       </div>
-      <Carousel cards={cards}/>
+      <Carousel cards={cards} resetKey={q.n}/>
     </div>
   );
 }
