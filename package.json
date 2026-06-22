@@ -1,0 +1,22 @@
+{
+  "name": "world-cup-map-daily",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "A daily World Cup geography game — guess the country from clues by tapping a 3D globe.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11"
+  }
+}
