@@ -6,7 +6,6 @@ import WORLD from "../data/world.json";
 import Globe from "./Globe.jsx";
 import ClueCard from "./ClueCard.jsx";
 import RevealPanel from "./RevealPanel.jsx";
-import { VisualEvidence } from "./VisualEvidence.jsx";
 
 function Game({questions, onFinish, reduced}){
   const [qi, setQi] = useState(0);
@@ -112,7 +111,6 @@ function Game({questions, onFinish, reduced}){
       <div className="gamegrid">
         <div className="leftpane">
           <ClueCard q={q} miniScore={miniScore} elapsed={displaySec}/>
-          <VisualEvidence question={q}/>
         </div>
         <div className="rightpane">
           <Globe phase={phase} answerISO={q.answer} guessISO={cur?.guess} onGuess={onGuess} reduced={reduced}/>
