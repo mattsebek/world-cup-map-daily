@@ -109,8 +109,12 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     const gc=capOf(guessISO), ac=capOf(answerISO);
     const run=()=>{
       const sep=d3.geoDistance([gc.lng,gc.lat],[ac.lng,ac.lat]);
-      const z = sep>1.7?1.0 : sep>0.8?1.3 : 1.7;
-      animateTo(frameOn(ca[0],ca[1],z), z);                   // stage 2: answer flag centered & visible
+      // zoom out to show both endpoints simultaneously
+      const mid=d3.geoInterpolate([gc.lng,gc.lat],[ac.lng,ac.lat])(0.5);
+      const halfSep=sep/2;
+      // fit endpoints at ~62% of globe radius; clamp to sane range
+      const targetZ=Math.min(MAXZ, Math.max(MINZ, 0.62/Math.sin(Math.max(halfSep,0.01))));
+      animateTo(frameOn(mid[0],mid[1],targetZ), targetZ);
     };
     if(reduced) run(); else timerRef.current=setTimeout(run, 900);
     return ()=>clearTimeout(timerRef.current);
