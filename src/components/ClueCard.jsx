@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { fmt, fmtTime } from "../lib/util.js";
 
 const CLUE_META = {
@@ -53,7 +53,7 @@ const STAR_PLAYERS = {
   GHA:"Thomas Partey",
 };
 
-function PlayerPhoto({ iso }) {
+function PlayerCard({ iso }) {
   const [src, setSrc] = useState(null);
   const name = STAR_PLAYERS[iso];
   useEffect(() => {
@@ -69,56 +69,107 @@ function PlayerPhoto({ iso }) {
     return () => ctrl.abort();
   }, [name]);
 
-  if (!name || (!src)) return null;
-  return <img src={src} alt="" className="cv-player-img"/>;
+  if (!name) return null;
+  return (
+    <div className="carousel-card carousel-player">
+      <div className="cc-label">Star Player</div>
+      <div className="cc-player-body">
+        {src && <img src={src} alt="" className="cc-player-img"/>}
+        <span className="cc-player-name">{name.replace(/ \(.*\)/, "")}</span>
+      </div>
+    </div>
+  );
+}
+
+function FlagCard({ colors }) {
+  return (
+    <div className="carousel-card carousel-flag">
+      <div className="cc-label">Flag Colours</div>
+      <div className="cc-swatches">
+        {colors.map((c, i) => <div key={i} className="cc-swatch" style={{background:c}}/>)}
+      </div>
+    </div>
+  );
+}
+
+function ClueTextCard({ clue }) {
+  const meta = CLUE_META[clue.type] || {label: clue.type, icon:"·"};
+  return (
+    <div className="carousel-card carousel-clue">
+      <div className="cc-label"><b>{meta.icon}</b> {meta.label}</div>
+      <p className="cc-text">{clue.text}</p>
+    </div>
+  );
+}
+
+function Carousel({ cards }) {
+  const [idx, setIdx] = useState(0);
+  const touchStartX = useRef(null);
+  const touchStartY = useRef(null);
+
+  // Reset to first card when cards change (new question)
+  useEffect(() => { setIdx(0); }, [cards]);
+
+  const prev = useCallback(() => setIdx(i => Math.max(0, i - 1)), []);
+  const next = useCallback(() => setIdx(i => Math.min(cards.length - 1, i + 1)), [cards.length]);
+
+  const onTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+  const onTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX.current;
+    const dy = e.changedTouches[0].clientY - touchStartY.current;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) {
+      if (dx < 0) next(); else prev();
+    }
+    touchStartX.current = null;
+  };
+
+  return (
+    <div className="carousel" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <div className="carousel-track" style={{transform:`translateX(${-idx*100}%)`, transition:"transform 0.25s ease"}}>
+        {cards.map((card, i) => (
+          <div className="carousel-slide" key={i}>
+            {card.kind === "clue"   && <ClueTextCard clue={card.data}/>}
+            {card.kind === "flag"   && <FlagCard colors={card.colors}/>}
+            {card.kind === "player" && <PlayerCard iso={card.iso}/>}
+          </div>
+        ))}
+      </div>
+      <div className="carousel-dots">
+        {cards.map((_, i) => (
+          <button key={i} className={"cdot"+(i===idx?" active":"")} onClick={()=>setIdx(i)} aria-label={`Card ${i+1}`}/>
+        ))}
+      </div>
+      {idx > 0 && <button className="carousel-arrow left" onClick={prev} aria-label="Previous">‹</button>}
+      {idx < cards.length - 1 && <button className="carousel-arrow right" onClick={next} aria-label="Next">›</button>}
+    </div>
+  );
 }
 
 function ClueCard({q, miniScore, elapsed}){
   const warn = elapsed >= 120;
   const urgent = elapsed >= 240;
-  const swatches = FLAG_COLORS[q.answer] || [];
-  const hasPlayer = !!STAR_PLAYERS[q.answer];
+
+  const cards = [
+    ...q.clues.slice(0, 3).map(c => ({ kind: "clue", data: c })),
+    ...(FLAG_COLORS[q.answer]?.length ? [{ kind: "flag", colors: FLAG_COLORS[q.answer] }] : []),
+    ...(STAR_PLAYERS[q.answer] ? [{ kind: "player", iso: q.answer }] : []),
+  ];
 
   return (
     <div className="cluecard">
       <div className="cluetop">
         <span className="counter">Case <b>{q.n}</b> <i>of 5</i></span>
         <span className={"diff "+q.difficulty.toLowerCase()}>{q.difficulty}</span>
-      </div>
-      {q.codename && <div className="codename">"{q.codename}"</div>}
-      <div className="clues">
-        {q.clues.map((c,i)=>(
-          <div className="clue" key={i}>
-            <span className="ctype"><b>{CLUE_META[c.type]?.icon}</b>{CLUE_META[c.type]?.label||c.type}</span>
-            <p>{c.text}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="clue-visual">
-        <div className="cv-left">
-          <div className="cv-label">Flag Colours</div>
-          <div className="cv-swatches">
-            {swatches.map((c,i)=><div key={i} className="cv-swatch" style={{background:c}}/>)}
-          </div>
-        </div>
-        {hasPlayer && (
-          <div className="cv-right">
-            <div className="cv-label">Star Player</div>
-            <div className="cv-player-wrap">
-              <PlayerPhoto iso={q.answer}/>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="cluefoot">
         <span className={`mission-clock${warn?" warn":""}${urgent?" urgent":""}`}>
-          <span className="clock-label">Mission</span>
-          <span className="clock-time">{fmtTime(elapsed)}</span>
+          {fmtTime(elapsed)}
         </span>
-        <span className="runtot">Score <b>{fmt(miniScore)}</b></span>
+        <span className="runtot">{fmt(miniScore)}</span>
       </div>
+      <Carousel cards={cards}/>
     </div>
   );
 }

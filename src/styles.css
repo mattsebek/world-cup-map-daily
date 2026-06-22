@@ -73,36 +73,42 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .pdot.done{background:var(--green)}
 .pdot.now{background:var(--turq);box-shadow:0 0 10px var(--turq)}
 .gamegrid{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
-.leftpane{display:flex;flex-direction:column;gap:14px;position:sticky;top:70px}
-.cluecard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
-.cluetop{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.counter{font-family:'Space Grotesk';font-weight:700;font-size:18px}.counter i{color:var(--muted);font-weight:500;font-size:13px}
-.diff{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:5px 9px;border-radius:999px}
+.leftpane{display:flex;flex-direction:column;gap:14px;position:sticky;top:70px;min-width:0;overflow:hidden}
+/* — ClueCard — */
+.cluecard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px 10px;overflow:hidden;min-width:0}
+.cluetop{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:8px;margin-bottom:10px}
+.counter{font-family:'Space Grotesk';font-weight:700;font-size:16px;white-space:nowrap}.counter i{color:var(--muted);font-weight:500;font-size:12px}
+.diff{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 8px;border-radius:999px;white-space:nowrap}
 .diff.easy{color:var(--green);background:rgba(31,209,102,.15)}
 .diff.medium{color:var(--lime);background:rgba(216,240,48,.14)}
 .diff.hard{color:var(--red);background:rgba(255,59,73,.16)}
-.clues{display:flex;flex-direction:column;gap:13px}
-.clue{padding-left:11px;border-left:2px solid rgba(0,240,216,.4)}
-.ctype{display:flex;align-items:center;gap:6px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--turq);font-weight:600;font-family:'Space Grotesk'}
-.ctype b{color:var(--coral)}
-.clue p{margin:4px 0 0;font-size:14px;line-height:1.5;color:#e2e7f6}
-.codename{font-size:12px;color:var(--turq);font-style:italic;margin:-4px 0 10px;opacity:.85}
-.clue-visual{display:flex;gap:14px;align-items:flex-start;padding:12px 0 4px;border-top:1px solid var(--line);margin-top:10px}
-.cv-left{display:flex;flex-direction:column;gap:6px;flex:1}
-.cv-right{display:flex;flex-direction:column;gap:6px}
-.cv-label{font-family:'Space Grotesk';font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.cv-swatches{display:flex;gap:8px;align-items:center}
-.cv-swatch{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.18);box-shadow:0 2px 6px rgba(0,0,0,.4);flex-shrink:0}
-.cv-player-wrap{width:56px;height:72px;border-radius:7px;overflow:hidden;background:rgba(255,255,255,.05)}
-.cv-player-img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
-.cluefoot{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
-.instr{color:var(--turq)}.runtot b{color:var(--white);font-family:'Space Grotesk'}
-.mission-clock{display:flex;align-items:center;gap:6px;font-family:'Space Grotesk'}
-.clock-label{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.clock-time{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--white);letter-spacing:.04em}
-.mission-clock.warn .clock-time{color:var(--lime)}
-.mission-clock.urgent .clock-time{color:var(--coral);animation:pulse-clock 1s ease-in-out infinite}
+.mission-clock{font-family:'Space Grotesk';font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--muted);text-align:right;white-space:nowrap}
+.mission-clock.warn{color:var(--lime)}
+.mission-clock.urgent{color:var(--coral);animation:pulse-clock 1s ease-in-out infinite}
 @keyframes pulse-clock{0%,100%{opacity:1}50%{opacity:.6}}
+.runtot{font-family:'Space Grotesk';font-size:13px;font-weight:700;color:var(--white);white-space:nowrap}
+
+/* — Carousel — */
+.carousel{position:relative;overflow:hidden;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line);min-width:0}
+.carousel-track{display:flex;width:100%;will-change:transform}
+.carousel-slide{min-width:100%;width:100%;flex-shrink:0;box-sizing:border-box;overflow:hidden}
+.carousel-card{padding:12px 14px;min-height:120px;display:flex;flex-direction:column;gap:8px;box-sizing:border-box}
+.cc-label{font-family:'Space Grotesk';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--turq);font-weight:700}
+.cc-label b{color:var(--coral);margin-right:4px}
+.cc-text{margin:0;font-size:13.5px;line-height:1.52;color:#e2e7f6;flex:1;word-break:break-word}
+.carousel-clue{border-left:3px solid rgba(0,240,216,.4);padding-left:11px}
+.cc-swatches{display:flex;gap:12px;align-items:center;flex:1}
+.cc-swatch{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.18);box-shadow:0 2px 8px rgba(0,0,0,.5);flex-shrink:0}
+.carousel-player{align-items:flex-start}
+.cc-player-body{display:flex;align-items:center;gap:12px;flex:1}
+.cc-player-img{width:60px;height:72px;border-radius:8px;object-fit:cover;object-position:top center;flex-shrink:0;background:rgba(255,255,255,.06)}
+.cc-player-name{font-family:'Space Grotesk';font-size:15px;font-weight:700;color:var(--white);line-height:1.3}
+.carousel-dots{display:flex;justify-content:center;gap:5px;padding:7px 0 6px}
+.cdot{width:6px;height:6px;border-radius:50%;border:none;background:rgba(255,255,255,.22);padding:0;cursor:pointer;transition:background .2s}
+.cdot.active{background:var(--turq);width:18px;border-radius:3px}
+.carousel-arrow{position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:rgba(10,20,60,.7);color:var(--white);font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;margin-top:-14px}
+.carousel-arrow.left{left:6px}
+.carousel-arrow.right{right:6px}
 
 .mapwrap{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:radial-gradient(130% 120% at 50% -10%, #101a44 0%, #0a0f2e 50%, #070a20 100%)}
 .globe{display:block;width:100%;height:auto;touch-action:none;cursor:grab;transition:transform .45s cubic-bezier(.2,.9,.3,1)}
@@ -114,7 +120,7 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
   backdrop-filter:blur(14px);border-top:1px solid rgba(0,240,216,.32);
   box-shadow:0 -24px 54px -18px rgba(0,0,0,.8);
   animation:sheetup .42s cubic-bezier(.2,.9,.3,1)}
-.revealsheet-inner{max-width:980px;margin:0 auto;padding:8px 18px 18px;max-height:62vh;overflow:auto}
+.revealsheet-inner{max-width:980px;margin:0 auto;padding:6px 16px 14px;max-height:56vh;overflow:auto}
 @keyframes sheetup{from{transform:translateY(100%)}to{transform:none}}
 .sheetgrab{width:42px;height:4px;border-radius:3px;background:rgba(255,255,255,.24);margin:2px auto 12px}
 .revealsheet .reveal{background:transparent;border:none;padding:0;animation:none}
@@ -132,28 +138,29 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .selrow select{background:#0a1030;color:var(--white);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-family:inherit;font-size:12.5px;max-width:220px}
 
 /* reveal */
-.case-closed-stamp{display:inline-block;font-family:'Space Grotesk';font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--green);border:1px solid rgba(31,209,102,.4);border-radius:6px;padding:3px 8px;margin-bottom:10px}
-.case-score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
-.cs-item{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:10px;padding:9px 10px;text-align:center}
-.cs-label{display:block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
-.cs-value{font-family:'Space Grotesk';font-weight:700;font-size:15px}
+.case-closed-stamp{display:inline-block;font-family:'Space Grotesk';font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--green);border:1px solid rgba(31,209,102,.4);border-radius:5px;padding:2px 6px;vertical-align:middle;margin-right:6px}
+.case-score-row{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+.cs-item{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:9px;padding:7px 8px;text-align:center}
+.cs-label{display:block;font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:3px}
+.cs-value{font-family:'Space Grotesk';font-weight:700;font-size:14px}
 .cs-penalty{color:var(--coral)}
 .cs-total{color:var(--turq)}
-.reveal{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 18px;animation:slideup .35s ease}
+.reveal{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 16px;animation:slideup .35s ease}
 @keyframes slideup{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.revealhead{display:flex;align-items:baseline;justify-content:space-between;padding-bottom:10px;border-bottom:1px solid var(--line)}
-.rlabel{font-family:'Space Grotesk';font-weight:700;color:var(--lab);font-size:15px}
-.rdist{font-family:'Space Grotesk';font-weight:700;font-size:30px}.rdist i{font-size:14px;color:var(--muted)}
-.answerline{display:flex;gap:11px;align-items:center;margin:13px 0 6px}
-.ansflag{font-size:22px}
-.ansflagimg{width:40px;height:28px;border-radius:5px;object-fit:cover;border:1px solid rgba(255,255,255,.28);box-shadow:0 2px 9px rgba(0,0,0,.45);flex-shrink:0}
-.ansflagimg.sm{width:24px;height:17px;border-radius:3.5px}
-.ansname{font-family:'Space Grotesk';font-weight:700;font-size:19px}
-.anssub{font-size:12px;color:var(--muted)}
-.guessline{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);margin-bottom:8px}
+.revealhead{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--line);gap:10px}
+.rlabel{font-family:'Space Grotesk';font-weight:700;color:var(--lab);font-size:14px;display:flex;align-items:center;flex-wrap:wrap;gap:4px}
+.rdist{font-family:'Space Grotesk';font-weight:700;font-size:24px;white-space:nowrap;flex-shrink:0}.rdist i{font-size:12px;color:var(--muted)}
+.answerline{display:flex;gap:10px;align-items:center;margin:10px 0 0;flex-wrap:wrap}
+.ansflag{font-size:20px}
+.ansflagimg{width:36px;height:25px;border-radius:4px;object-fit:cover;border:1px solid rgba(255,255,255,.28);box-shadow:0 2px 9px rgba(0,0,0,.45);flex-shrink:0}
+.ansflagimg.sm{width:22px;height:15px;border-radius:3px}
+.ansname{font-family:'Space Grotesk';font-weight:700;font-size:17px}
+.anssub{font-size:11.5px;color:var(--muted)}
+.guessline{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
 .guessline.exact{color:var(--green)}
-.learn{font-size:13px;line-height:1.5;color:#d4d9f0;margin:4px 0 14px}
-.next{width:100%;font-family:'Space Grotesk';font-weight:700;font-size:15px;padding:13px;border-radius:12px;background:var(--turq);color:#04121b;transition:transform .15s}
+.guessline.inline{margin-top:6px;padding-top:6px;border-top:1px solid var(--line);width:100%}
+.learn{font-size:12.5px;line-height:1.48;color:#d4d9f0;margin:6px 0 12px}
+.next{width:100%;font-family:'Space Grotesk';font-weight:700;font-size:15px;padding:11px;border-radius:12px;background:var(--turq);color:#04121b;transition:transform .15s}
 .next:hover{transform:translateY(-1px)}
 
 /* score breakdown */
@@ -237,19 +244,12 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 @media(max-width:860px){
   .gamegrid{grid-template-columns:1fr;gap:10px}
   .leftpane{position:static}
-  .cluecard{padding:11px 13px}
+  .cluecard{padding:10px 12px 8px}
   .cluetop{margin-bottom:8px}
-  .counter{font-size:16px}
-  .codename{margin:-2px 0 7px;font-size:11px}
-  .clues{gap:7px}
-  .clue{padding-left:9px}
-  .clue p{font-size:12.5px;line-height:1.38;margin:2px 0 0}
-  .ctype{font-size:9.5px}
-  .clue-visual{padding:8px 0 2px;margin-top:8px;gap:10px}
-  .cv-swatch{width:22px;height:22px}
-  .cv-player-wrap{width:46px;height:56px}
-  .cluefoot{margin-top:10px;padding-top:9px}
-  .clock-time{font-size:13px}
+  .counter{font-size:14px}
+  .cc-text{font-size:12.5px;line-height:1.45}
+  .carousel-card{min-height:110px;padding:10px 12px}
+  .cc-player-img{width:50px;height:60px}
   .statcards{grid-template-columns:repeat(2,1fr)}
   .bthead,.btrow{grid-template-columns:34px 1fr auto}
   .hideS{display:none}
