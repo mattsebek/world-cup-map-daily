@@ -129,22 +129,24 @@ function Carousel({ cards, resetKey }) {
 
   return (
     <div className="carousel" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-      <div className="carousel-track" style={{transform:`translateX(${-idx*100}%)`, transition:"transform 0.25s ease"}}>
-        {cards.map((card, i) => (
-          <div className="carousel-slide" key={i}>
-            {card.kind === "clue"   && <ClueTextCard clue={card.data}/>}
-            {card.kind === "flag"   && <FlagCard colors={card.colors}/>}
-            {card.kind === "player" && <PlayerCard iso={card.iso}/>}
-          </div>
-        ))}
+      <button className="carousel-arrow left" onClick={prev} disabled={idx === 0} aria-label="Previous">‹</button>
+      <div className="carousel-viewport">
+        <div className="carousel-track" style={{transform:`translateX(${-idx*100}%)`, transition:"transform 0.25s ease"}}>
+          {cards.map((card, i) => (
+            <div className="carousel-slide" key={i}>
+              {card.kind === "clue"   && <ClueTextCard clue={card.data}/>}
+              {card.kind === "flag"   && <FlagCard colors={card.colors}/>}
+              {card.kind === "player" && <PlayerCard iso={card.iso}/>}
+            </div>
+          ))}
+        </div>
+        <div className="carousel-dots">
+          {cards.map((_, i) => (
+            <button key={i} className={"cdot"+(i===idx?" active":"")} onClick={()=>setIdx(i)} aria-label={`Card ${i+1}`}/>
+          ))}
+        </div>
       </div>
-      <div className="carousel-dots">
-        {cards.map((_, i) => (
-          <button key={i} className={"cdot"+(i===idx?" active":"")} onClick={()=>setIdx(i)} aria-label={`Card ${i+1}`}/>
-        ))}
-      </div>
-      {idx > 0 && <button className="carousel-arrow left" onClick={prev} aria-label="Previous">‹</button>}
-      {idx < cards.length - 1 && <button className="carousel-arrow right" onClick={next} aria-label="Next">›</button>}
+      <button className="carousel-arrow right" onClick={next} disabled={idx === cards.length - 1} aria-label="Next">›</button>
     </div>
   );
 }
