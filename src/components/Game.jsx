@@ -24,11 +24,13 @@ function Game({questions, onFinish, reduced}){
   const q = questions[qi];
   const miniScore = guessesRef.current.reduce((s,g) => s + g.caseScore, 0);
 
-  // Timer display tick
+  // Timer display tick — shows per-case elapsed time (resets to 0 on each new case)
   useEffect(() => {
     const id = setInterval(() => {
       if (!pausedRef.current) {
-        setDisplaySec(Math.floor(accRef.current + (Date.now() - tickRef.current) / 1000));
+        setDisplaySec(Math.floor(
+          accRef.current + (Date.now() - tickRef.current) / 1000 - caseStartRef.current
+        ));
       }
     }, 250);
     return () => clearInterval(id);
