@@ -64,7 +64,7 @@ function Results({guesses, questions, totalTime, profile, reduced, onRegister, o
 
       <div className="restable">
         <div className="rthead">
-          <span>#</span><span>Target</span><span>Your Trace</span>
+          <span>#</span><span>Target</span><span className="ca">Your Selection</span>
           <span className="ra hideS">Dist</span><span className="ra hideS">Time</span><span className="ra">Score</span>
         </div>
         {guesses.map((g,i)=>{
@@ -76,7 +76,7 @@ function Results({guesses, questions, totalTime, profile, reduced, onRegister, o
                 {af && <img className="tflag" src={af} alt=""/>}
                 <span className="tname">{nameOf(g.answer)}</span>
               </span>
-              <span>{g.isExact ? <span style={{color:"var(--green)"}}>✓ Exact</span> : guessNameOf(g.guess)}</span>
+              <span className="ca">{g.isExact ? <span style={{color:"var(--green)"}}>✓ Exact</span> : guessNameOf(g.guess)}</span>
               <span className="ra hideS">{fmt(g.distance)} mi</span>
               <span className="ra hideS">{fmtTime(g.caseTime)}</span>
               <span className="ra">{fmt(g.caseScore)}</span>

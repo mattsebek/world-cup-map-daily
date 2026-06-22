@@ -30,7 +30,7 @@ function RevealPanel({q, guessISO, distance, caseTime, timePenalty, caseScore, o
       {!exact
         ? <div className="guessline">
             {guessFlag && <img className="ansflagimg sm" src={guessFlag} alt={`Flag of ${guessName}`}/>}
-            <span>Your trace · {guessName}{gCap ? ` (${gCap})` : ""} — {fmt(distance)} mi away</span>
+            <span>Your selection · {guessName}{gCap ? ` (${gCap})` : ""} — {fmt(distance)} mi away</span>
           </div>
         : <div className="guessline exact">Perfect Trace — exact country.</div>}
       <div className="case-score-row">

@@ -177,7 +177,8 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .chip.green{color:var(--green);border-color:rgba(31,209,102,.35)}
 .chip.turq{color:var(--turq);border-color:rgba(0,240,216,.35)}
 .restable{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:6px 0 16px}
-.rthead,.rtrow{display:grid;grid-template-columns:24px 1fr 1fr auto auto auto;gap:6px;padding:10px 14px;align-items:center;font-size:13px}
+.rthead,.rtrow{display:grid;grid-template-columns:24px 1fr 1fr auto auto auto;gap:4px 14px;padding:10px 14px;align-items:center;font-size:13px}
+.ca{text-align:center}
 .rthead{background:rgba(255,255,255,.04);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-family:'Space Grotesk'}
 .rtrow{border-top:1px solid var(--line)}
 .ra{text-align:right;font-family:'Space Grotesk';font-weight:600}
