@@ -20,7 +20,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
   useEffect(()=>{phaseRef.current=phase;},[phase]);
   useEffect(()=>{onGuessRef.current=onGuess;},[onGuess]);
 
-  const projection=useMemo(()=> d3.geoOrthographic().translate(CTR).clipAngle(90), []);
+  const projection=useMemo(()=> d3.geoOrthographic().translate(CTR).clipAngle(90).precision(0.2), []);
   projection.rotate(rot).scale(BASE*zoom);
   const pathGen=useMemo(()=> d3.geoPath(projection), [projection]);
   const graticule=useMemo(()=> d3.geoGraticule().step([20,20])(), []);
@@ -133,16 +133,28 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     ? pathGen({type:"LineString", coordinates:d3.range(0,1.0001,1/80).map(t=>d3.geoInterpolate([gCap.lng,gCap.lat],[aCap.lng,aCap.lat])(t))})
     : null;
 
+  const landShades=useMemo(()=>{
+    const m={};
+    WORLD.features.forEach(f=>{
+      const h=[...(f.id||'')].reduce((a,c)=>a*31+c.charCodeAt(0),0)>>>0;
+      const l=19+(h%9);       // lightness 19–27%
+      const s=48+((h>>4)%10); // saturation 48–57%
+      m[f.id]=`hsl(225,${s}%,${l}%)`;
+    });
+    return m;
+  },[]);
+
   const fillFor=(id)=>{
     if(reveal && id===answerISO) return "url(#correctFill)";
     if(reveal && id===guessISO && id!==answerISO) return "rgba(255,59,73,0.6)";
     if(!reveal && id===hover) return "rgba(0,240,216,0.32)";
-    return PALETTE.land;
+    return landShades[id]||PALETTE.land;
   };
 
   return (
     <div className="mapwrap">
       <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="globe" onDoubleClick={onDouble}
+           shapeRendering="geometricPrecision"
            role="img" aria-label="Interactive 3D globe. Drag to rotate, double-click to zoom, tap a country to guess.">
         <defs>
           <radialGradient id="ocean" cx="38%" cy="32%" r="78%">
@@ -223,10 +235,10 @@ function FlagMarker({x,y,iso,accent,reduced,delay}){
 function Confetti({x,y,iso,reduced}){
   const src=flagSrc(iso), code=flagCode(iso);
   const cols=[PALETTE.turq,PALETTE.lime,PALETTE.coral,PALETTE.violet,PALETTE.green,PALETTE.red,PALETTE.blue];
-  const parts=useMemo(()=> Array.from({length:34},(_,i)=>{
-    const ang=Math.random()*Math.PI*2, dist=26+Math.random()*46;
-    return { tx:Math.cos(ang)*dist, ty:Math.sin(ang)*dist-8, rot:Math.random()*720-360,
-      d:(Math.random()*0.12).toFixed(3), w:3+Math.random()*3, h:5+Math.random()*5, c:cols[i%cols.length] };
+  const parts=useMemo(()=> Array.from({length:90},(_,i)=>{
+    const ang=Math.random()*Math.PI*2, dist=50+Math.random()*130;
+    return { tx:Math.cos(ang)*dist, ty:Math.sin(ang)*dist-12, rot:Math.random()*900-450,
+      d:(Math.random()*0.18).toFixed(3), w:4+Math.random()*4, h:6+Math.random()*8, c:cols[i%cols.length] };
   }),[]);
   return (
     <g style={{transform:`translate(${x}px,${y}px)`}}>
