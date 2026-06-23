@@ -42,7 +42,6 @@ function Results({guesses, questions, totalTime, profile, reduced, onRegister, o
 
       <div className="chips">
         <span className="chip green">{exact} correct {exact===1?"selection":"selections"}</span>
-        <span className="chip turq">Agent Rank · {rank}</span>
         <span className="chip">Time · {fmtTime(totalTime)}</span>
         <span className="chip">Time Penalty · +{fmt(totalPenalty)}</span>
       </div>
