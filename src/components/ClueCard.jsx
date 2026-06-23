@@ -152,7 +152,6 @@ function Carousel({ cards, resetKey }) {
 }
 
 function ClueCard({q, miniScore, elapsed}){
-  const warn = elapsed >= 120;
   const urgent = elapsed >= 240;
 
   const cards = useMemo(() => [
@@ -163,15 +162,18 @@ function ClueCard({q, miniScore, elapsed}){
 
   return (
     <div className="cluecard">
-      <div className="cluetop">
-        <span className="counter">Case <b>{q.n}</b> <i>of 5</i></span>
+      <div className="case-header">
+        <span className="case-label">Case {q.n} <span className="case-of">of 5</span></span>
         <span className={"diff "+q.difficulty.toLowerCase()}>{q.difficulty}</span>
-        <span className={`mission-clock${warn?" warn":""}${urgent?" urgent":""}`}>
-          {fmtTime(elapsed)}
-        </span>
-        <span className="runtot">{fmt(miniScore)}</span>
       </div>
-      <Carousel cards={cards} resetKey={q.n}/>
+      <div className="case-body">
+        <div className="case-scorebox">
+          <span className="csb-label">Score</span>
+          <span className="csb-score">{fmt(miniScore)}</span>
+          <span className={`csb-timer${urgent?" urgent":""}`}>{fmtTime(elapsed)}</span>
+        </div>
+        <Carousel cards={cards} resetKey={q.n}/>
+      </div>
     </div>
   );
 }
