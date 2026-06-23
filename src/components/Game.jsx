@@ -127,9 +127,6 @@ function Game({questions, onFinish, reduced}){
               q={q}
               guessISO={cur.guess}
               distance={cur.distance}
-              caseTime={cur.caseTime}
-              timePenalty={cur.timePenalty}
-              caseScore={cur.caseScore}
               onNext={next}
               last={qi === questions.length - 1}
               reduced={reduced}

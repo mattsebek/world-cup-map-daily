@@ -84,11 +84,11 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 @keyframes pulse-clock{0%,100%{opacity:1}50%{opacity:.6}}
 
 /* — Carousel — */
-.carousel{display:flex;align-items:stretch;gap:6px;min-width:0;flex:1}
-.carousel-viewport{flex:1;overflow:hidden;min-width:0}
+.carousel{min-width:0;flex:1}
+.carousel-viewport{overflow:hidden;min-width:0}
 .carousel-track{display:flex;width:100%;will-change:transform}
 .carousel-slide{min-width:100%;width:100%;flex-shrink:0;box-sizing:border-box;overflow:hidden}
-.carousel-card{padding:8px 0;min-height:100px;display:flex;flex-direction:column;gap:6px;box-sizing:border-box}
+.carousel-card{padding:6px 0 8px;min-height:90px;display:flex;flex-direction:column;gap:6px;box-sizing:border-box}
 .cc-label{font-family:'Space Grotesk';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--turq);font-weight:700}
 .cc-label b{color:var(--coral);margin-right:4px}
 .cc-text{margin:0;font-size:13.5px;line-height:1.52;color:#e2e7f6;flex:1;word-break:break-word}
@@ -102,9 +102,6 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .carousel-dots{display:flex;justify-content:flex-start;gap:5px;padding:6px 0 2px}
 .cdot{width:6px;height:6px;border-radius:50%;border:none;background:rgba(255,255,255,.22);padding:0;cursor:pointer;transition:background .2s}
 .cdot.active{background:var(--turq);width:18px;border-radius:3px}
-.carousel-arrow{width:22px;flex-shrink:0;display:flex;align-items:center;justify-content:center;align-self:stretch;border:none;background:none;color:rgba(255,255,255,.35);font-size:22px;cursor:pointer;padding:0;transition:color .15s}
-.carousel-arrow:not(:disabled):hover{color:var(--white)}
-.carousel-arrow:disabled{opacity:0;pointer-events:none}
 
 .mapwrap{position:relative;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:radial-gradient(130% 120% at 50% -10%, #101a44 0%, #0a0f2e 50%, #070a20 100%)}
 .globe{display:block;width:100%;height:auto;touch-action:none;cursor:grab;transition:transform .45s cubic-bezier(.2,.9,.3,1)}

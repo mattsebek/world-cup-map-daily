@@ -59,8 +59,10 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     const toLonLat=(sx,sy)=>{
       const r=node.getBoundingClientRect();
       const x=(sx-r.left)*(W/r.width), y=(sy-r.top)*(H/r.height);
-      const dx=x-CTR[0], dy=y-CTR[1], rad=BASE*zoomRef.current;
-      if(dx*dx+dy*dy > rad*rad) return null;
+      const dx=x-CTR[0], dy=y-CTR[1];
+      // clamp to actual visible circle (SVG viewBox limits visible radius to ~298px)
+      const visRad=Math.min(BASE*zoomRef.current, 298);
+      if(dx*dx+dy*dy > visRad*visRad) return null;
       return projection.invert([x,y]);
     };
     const drag=d3.drag()
@@ -73,7 +75,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
         if(moved>5 || phaseRef.current!=="guessing") return;
         const ll=toLonLat(e.sourceEvent.clientX, e.sourceEvent.clientY);
         if(!ll){ document.dispatchEvent(new CustomEvent("wcmd-outside")); return; }
-        const hit=WORLD.features.find(f=> d3.geoContains(f, ll));
+        const hit=WORLD.features.find(f=> f.id!=='ATA' && d3.geoContains(f, ll));
         if(hit) onGuessRef.current(hit.id);
         else document.dispatchEvent(new CustomEvent("wcmd-outside"));
       });

@@ -166,7 +166,6 @@ function Carousel({ cards, resetKey, header }) {
 
   return (
     <div className="carousel">
-      <button className="carousel-arrow left" onClick={prev} disabled={idx === 0} aria-label="Previous">‹</button>
       <div className="carousel-viewport" ref={viewportRef}>
         {header}
         <div className="carousel-track" style={trackStyle}>
@@ -184,7 +183,6 @@ function Carousel({ cards, resetKey, header }) {
           ))}
         </div>
       </div>
-      <button className="carousel-arrow right" onClick={next} disabled={idx === cards.length - 1} aria-label="Next">›</button>
     </div>
   );
 }

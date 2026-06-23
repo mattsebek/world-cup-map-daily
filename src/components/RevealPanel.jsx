@@ -1,11 +1,11 @@
-import { resultLabel, fmtTime, fmt } from "../lib/util.js";
+import { resultLabel, fmt } from "../lib/util.js";
 import { flagSrc } from "../lib/flags.js";
 import DistanceCounter from "./DistanceCounter.jsx";
 import PARTICIPANTS from "../data/participants.json";
 import WORLD from "../data/world.json";
 import CAPITALS from "../data/capitals.json";
 
-function RevealPanel({q, guessISO, distance, caseTime, timePenalty, caseScore, onNext, last, reduced}){
+function RevealPanel({q, guessISO, distance, onNext, last, reduced}){
   const lab = resultLabel(distance);
   const exact = guessISO === q.answer;
   const guessName = PARTICIPANTS[guessISO]?.name || WORLD.features.find(f=>f.id===guessISO)?.properties.name || guessISO;
@@ -32,20 +32,6 @@ function RevealPanel({q, guessISO, distance, caseTime, timePenalty, caseScore, o
           </div>
         )}
         {exact && <div className="guessline exact inline">✓ Exact</div>}
-      </div>
-      <div className="case-score-row">
-        <div className="cs-item">
-          <span className="cs-label">Time</span>
-          <span className="cs-value">{fmtTime(caseTime)}</span>
-        </div>
-        <div className="cs-item">
-          <span className="cs-label">Penalty</span>
-          <span className="cs-value cs-penalty">+{fmt(timePenalty)}</span>
-        </div>
-        <div className="cs-item cs-total-item">
-          <span className="cs-label">Case Score</span>
-          <span className="cs-value cs-total">{fmt(caseScore)}</span>
-        </div>
       </div>
       <p className="learn">{q.reveal.body}</p>
       <button className="next" onClick={onNext}>{last ? "Mission Report →" : "Next Case →"}</button>
