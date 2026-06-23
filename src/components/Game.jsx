@@ -115,6 +115,7 @@ function Game({questions, onFinish, reduced}){
             <span className="prog-score">{miniScore.toLocaleString()}</span>
           </div>
           <ClueCard q={q} miniScore={miniScore} elapsed={displaySec}/>
+          {phase === "guessing" && <p className="hint-bar">Drag to spin · tap a country to guess</p>}
         </div>
       </div>
       {phase === "revealed" && cur &&
