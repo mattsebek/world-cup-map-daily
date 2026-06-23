@@ -1,13 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { store } from "./lib/store.js";
-import { fmtTime } from "./lib/util.js";
-import { SEED_LEADERBOARD } from "./data/leaderboard.js";
+import { fetchTodayBoard, submitScore } from "./lib/supabase.js";
 import { pickQuestions } from "./lib/questionBank.js";
 import Home from "./components/Home.jsx";
 import Game from "./components/Game.jsx";
 import Results from "./components/Results.jsx";
 import Leaderboard from "./components/Leaderboard.jsx";
-import Stats from "./components/Stats.jsx";
 import Register from "./components/Register.jsx";
 import HowItWorks from "./components/HowItWorks.jsx";
 
@@ -18,7 +16,8 @@ export default function App(){
   const [questions,setQuestions]=useState(null);
   const [totalTime,setTotalTime]=useState(0);
   const [profile,setProfile]=useState(null);
-  const [board,setBoard]=useState(SEED_LEADERBOARD);
+  const [board,setBoard]=useState([]);
+  const [boardLoading,setBoardLoading]=useState(false);
   const [history,setHistory]=useState([]);
   const [reduced,setReduced]=useState(false);
   const [pendingScore,setPendingScore]=useState(null);
@@ -28,23 +27,17 @@ export default function App(){
     (async()=>{
       const p=await store.get("wcmd:profile"); if(p) setProfile(p);
       const h=await store.get("wcmd:history"); if(h) setHistory(h);
-      const b=await store.get("wcmd:board"); if(b) setBoard(b);
     })();
   },[]);
 
-  const addToBoard=(prof, rec)=>{
-    const entry={
-      name:prof.displayName,
-      finalScore:rec.finalScore,
-      distance:rec.distance,
-      timePenalty:rec.timePenalty,
-      exact:rec.exact,
-      worst:rec.worst,
-      time:fmtTime(rec.completionSec),
-      fav:prof.favoriteCountryId||""
-    };
-    setBoard(prev=>{ const nb=[...prev.filter(e=>e.name!==entry.name), entry]; store.set("wcmd:board", nb); return nb; });
-  };
+  const refreshBoard = useCallback(async () => {
+    setBoardLoading(true);
+    try { setBoard(await fetchTodayBoard()); } catch(e){ console.error("board fetch", e); }
+    finally { setBoardLoading(false); }
+  }, []);
+
+  // Load board when navigating to it
+  useEffect(()=>{ if(screen==="board") refreshBoard(); },[screen, refreshBoard]);
 
   const finish=(g, totalSec)=>{
     const distance=g.reduce((s,x)=>s+x.distance,0);
@@ -55,24 +48,22 @@ export default function App(){
     setScreen("results");
     const today=new Date().toISOString().slice(0,10);
     const rec={
-      date:today,
-      total:distance,
-      finalScore,
-      distance,
-      timePenalty,
+      date:today, finalScore, distance, timePenalty,
       completionSec:totalSec,
       exact:g.filter(x=>x.isExact).length,
       worst:Math.max(...g.map(x=>x.distance)),
-      completedAt:new Date().toISOString()
     };
     const nh=[...history.filter(h=>h.date!==rec.date), rec];
     setHistory(nh); store.set("wcmd:history", nh);
-    if(profile) addToBoard(profile, rec);
+    // If already registered, submit score immediately
+    if(profile) submitScore(profile, rec).catch(console.error);
   };
 
-  const doRegister=(p)=>{
+  const doRegister=async (p)=>{
     setProfile(p); store.set("wcmd:profile", p);
-    if(pendingScore) addToBoard(p, {...pendingScore, completedAt:new Date().toISOString()});
+    if(pendingScore){
+      try { await submitScore(p, pendingScore); } catch(e){ console.error("submit", e); }
+    }
     setOverlay(null);
   };
 
@@ -86,12 +77,12 @@ export default function App(){
         </nav>
       </header>
       <main className={screen==="game"?"game-active":""}>
-        {screen==="home" && <Home profile={profile} onPlay={()=>{ setQuestions(pickQuestions()); setScreen("game"); }} onHow={()=>setOverlay("how")} onBoard={()=>setScreen("board")} onStats={()=>setScreen("stats")}/>}
+        {screen==="home" && <Home profile={profile} onPlay={()=>{ setQuestions(pickQuestions()); setScreen("game"); }} onHow={()=>setOverlay("how")} onBoard={()=>setScreen("board")}/>}
         {screen==="game" && questions && <Game questions={questions} onFinish={finish} reduced={reduced}/>}
         {screen==="results" && guesses && questions && <Results guesses={guesses} questions={questions} totalTime={totalTime} profile={profile} reduced={reduced}
             onRegister={(s)=>{ setPendingScore(s); setOverlay("register"); }}
             onLeaderboard={()=>setScreen("board")} onHome={()=>setScreen("home")}/>}
-        {screen==="board" && <Leaderboard entries={board} meName={profile?.displayName} onBack={()=>setScreen(guesses?"results":"home")}/>}
+        {screen==="board" && <Leaderboard entries={board} loading={boardLoading} meName={profile?.displayName} onBack={()=>setScreen(guesses?"results":"home")}/>}
       </main>
       <footer className="appfoot">Independent fan game · not affiliated with FIFA or any federation · geometry © Natural Earth (public domain)</footer>
       {overlay==="how" && <HowItWorks onClose={()=>setOverlay(null)}/>}

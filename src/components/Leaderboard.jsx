@@ -1,6 +1,6 @@
 import { fmt, todayStr } from "../lib/util.js";
 
-function Leaderboard({entries, meName, onBack}){
+function Leaderboard({entries, loading, meName, onBack}){
   const ranked=[...entries].sort((a,b)=>
     (a.finalScore??a.total)-(b.finalScore??b.total) ||
     b.exact-a.exact ||
@@ -11,7 +11,9 @@ function Leaderboard({entries, meName, onBack}){
   return (
     <div className="board">
       <div className="bhead"><h2>Global Leaderboard</h2><span>{todayStr()}</span></div>
-      {ranked.length===0
+      {loading
+        ? <div className="empty">Loading…</div>
+        : ranked.length===0
         ? <div className="empty">No scores yet today. Be the first agent to report.</div>
         : <div className="btable">
             <div className="bthead">
@@ -29,7 +31,8 @@ function Leaderboard({entries, meName, onBack}){
                 <span className="ra hideS">{e.time}</span>
               </div>
             ))}
-          </div>}
+          </div>
+        }
       {meIdx>=20 && <div className="mepin">Your rank · #{meIdx+1}</div>}
       <button className="textlink" onClick={onBack}>Back</button>
     </div>
