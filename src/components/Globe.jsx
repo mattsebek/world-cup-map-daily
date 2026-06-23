@@ -11,7 +11,7 @@ const DEFAULT_ROT=[100,-38,0];
 function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
   const svgRef=useRef(null);
   const [rot,setRot]=useState(DEFAULT_ROT);
-  const [zoom,setZoom]=useState(3.3);
+  const [zoom,setZoom]=useState(2.0);
   const [hover,setHover]=useState(null);
 
   const rotRef=useRef(rot), zoomRef=useRef(zoom), phaseRef=useRef(phase), onGuessRef=useRef(onGuess);

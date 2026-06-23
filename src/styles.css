@@ -68,10 +68,9 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .ve-kit-svg{width:80px;height:92px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5))}
 
 /* game */
-.progress{display:flex;gap:7px;justify-content:center;margin:2px 0 16px}
-.pdot{width:34px;height:5px;border-radius:3px;background:rgba(255,255,255,.12);transition:.3s}
-.pdot.done{background:var(--green)}
-.pdot.now{background:var(--turq);box-shadow:0 0 10px var(--turq)}
+.progress{display:flex;align-items:baseline;justify-content:center;gap:8px;margin:2px 0 14px}
+.prog-label{font-family:'Space Grotesk';font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.prog-score{font-family:'Space Grotesk';font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--white)}
 .gamegrid{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
 .leftpane{display:flex;flex-direction:column;gap:14px;position:sticky;top:70px;min-width:0;overflow:hidden}
 /* — ClueCard — */
@@ -80,16 +79,7 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
 .case-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .case-label{font-family:'Space Grotesk';font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--turq)}
 .case-of{color:var(--muted);font-weight:500}
-.diff{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap}
-.diff.easy{color:var(--green);background:rgba(31,209,102,.15)}
-.diff.medium{color:var(--lime);background:rgba(216,240,48,.14)}
-.diff.hard{color:var(--red);background:rgba(255,59,73,.16)}
-/* score box + carousel row */
-.case-body{display:flex;align-items:stretch;gap:12px}
-.case-scorebox{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-width:62px;background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:12px;padding:8px 10px;flex-shrink:0}
-.csb-label{font-family:'Space Grotesk';font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.csb-score{font-family:'Space Grotesk';font-size:22px;font-weight:700;color:var(--white);font-variant-numeric:tabular-nums;line-height:1}
-.csb-timer{font-family:'Space Grotesk';font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--lime);margin-top:4px;line-height:1}
+.csb-timer{font-family:'Space Grotesk';font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--lime)}
 .csb-timer.urgent{color:var(--coral);animation:pulse-clock 1s ease-in-out infinite}
 @keyframes pulse-clock{0%,100%{opacity:1}50%{opacity:.6}}
 
@@ -252,8 +242,6 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:20px 16px 30px}
   .leftpane{position:static}
   .cluecard{padding:10px 12px 8px}
   .case-header{margin-bottom:8px}
-  .csb-score{font-size:19px}
-  .case-scorebox{min-width:54px;padding:7px 8px}
   .cc-text{font-size:12.5px;line-height:1.45}
   .cc-player-img{width:50px;height:60px}
   .statcards{grid-template-columns:repeat(2,1fr)}

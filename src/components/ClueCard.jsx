@@ -201,16 +201,9 @@ function ClueCard({q, miniScore, elapsed}){
     <div className="cluecard">
       <div className="case-header">
         <span className="case-label">Case {q.n} <span className="case-of">of 5</span></span>
-        <span className={"diff "+q.difficulty.toLowerCase()}>{q.difficulty}</span>
+        <span className={`csb-timer${urgent?" urgent":""}`}>{fmtTime(elapsed)}</span>
       </div>
-      <div className="case-body">
-        <div className="case-scorebox">
-          <span className="csb-label">Score</span>
-          <span className="csb-score">{fmt(miniScore)}</span>
-          <span className={`csb-timer${urgent?" urgent":""}`}>{fmtTime(elapsed)}</span>
-        </div>
-        <Carousel cards={cards} resetKey={q.n}/>
-      </div>
+      <Carousel cards={cards} resetKey={q.n}/>
     </div>
   );
 }

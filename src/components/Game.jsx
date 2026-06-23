@@ -107,9 +107,10 @@ function Game({questions, onFinish, reduced}){
 
   return (
     <div className="game">
-      <div className="progress">{questions.map((_,i) => (
-        <span key={i} className={"pdot"+(i<qi?" done":"")+(i===qi?" now":"")}/>
-      ))}</div>
+      <div className="progress">
+        <span className="prog-label">Score</span>
+        <span className="prog-score">{miniScore.toLocaleString()}</span>
+      </div>
       <div className="gamegrid">
         <div className="leftpane">
           <ClueCard q={q} miniScore={miniScore} elapsed={displaySec}/>
