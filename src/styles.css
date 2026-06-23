@@ -80,14 +80,15 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 /* clue card + score float over the globe */
 .game-overlay{position:absolute;top:0;left:0;right:0;z-index:10;padding:12px 14px;pointer-events:none;display:flex;flex-direction:column;gap:8px;max-width:420px}
 .game-overlay>*{pointer-events:auto}
-.progress{display:flex;align-items:stretch;justify-content:space-between;gap:8px;margin:0;background:rgba(6,6,26,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:6px 14px;width:100%;box-sizing:border-box}
-.prog-col{display:flex;flex-direction:column;gap:1px}
+.progress{display:flex;align-items:stretch;gap:8px;margin:0;width:100%;box-sizing:border-box}
+.prog-col{display:flex;flex-direction:column;gap:1px;background:rgba(6,6,26,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:6px 14px}
 .prog-col-right{align-items:flex-end}
 .prog-label{font-family:'Space Grotesk';font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .prog-score{font-family:'Space Grotesk';font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--white)}
+.prog-timer{color:#f5d020}
 .prog-timer.urgent{color:var(--coral);animation:pulse-clock 1s ease-in-out infinite}
 /* — ClueCard — */
-.cluecard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px 10px;overflow:hidden;min-width:0}
+.cluecard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 22px 10px;overflow:hidden;min-width:0}
 /* case header bar */
 .case-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .case-label{font-family:'Space Grotesk';font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--turq)}
