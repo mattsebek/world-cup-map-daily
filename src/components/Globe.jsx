@@ -109,7 +109,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     let last=performance.now();
     const tick=(now)=>{
       const dt=now-last; last=now;
-      if(!draggingRef.current) setRot(r=>[r[0]+dt*0.004, r[1], r[2]]);
+      if(!draggingRef.current) setRot(r=>[r[0]-dt*0.004, r[1], r[2]]);
       spinRef.current=requestAnimationFrame(tick);
     };
     spinRef.current=requestAnimationFrame(tick);
