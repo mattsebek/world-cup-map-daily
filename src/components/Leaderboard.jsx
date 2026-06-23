@@ -14,7 +14,7 @@ function Leaderboard({entries, loading, meName, onBack}){
       {loading
         ? <div className="empty">Loading…</div>
         : ranked.length===0
-        ? <div className="empty">No scores yet today. Be the first agent to report.</div>
+        ? <div className="empty">No scores yet today.</div>
         : <div className="btable">
             <div className="bthead">
               <span>#</span><span>Agent</span>
