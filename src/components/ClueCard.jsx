@@ -102,7 +102,7 @@ function ClueTextCard({ clue }) {
   );
 }
 
-function Carousel({ cards, resetKey }) {
+function Carousel({ cards, resetKey, header }) {
   const [idx, setIdx] = useState(0);
   const [dragX, setDragX] = useState(0);
   const [dragging, setDragging] = useState(false);
@@ -168,6 +168,7 @@ function Carousel({ cards, resetKey }) {
     <div className="carousel">
       <button className="carousel-arrow left" onClick={prev} disabled={idx === 0} aria-label="Previous">‹</button>
       <div className="carousel-viewport" ref={viewportRef}>
+        {header}
         <div className="carousel-track" style={trackStyle}>
           {cards.map((card, i) => (
             <div className="carousel-slide" key={i}>
@@ -197,13 +198,16 @@ function ClueCard({q, miniScore, elapsed}){
     ...(STAR_PLAYERS[q.answer] ? [{ kind: "player", iso: q.answer }] : []),
   ], [q.n]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const header = (
+    <div className="case-header">
+      <span className="case-label">Case {q.n} <span className="case-of">of 5</span></span>
+      <span className={`csb-timer${urgent?" urgent":""}`}>{fmtTime(elapsed)}</span>
+    </div>
+  );
+
   return (
     <div className="cluecard">
-      <div className="case-header">
-        <span className="case-label">Case {q.n} <span className="case-of">of 5</span></span>
-        <span className={`csb-timer${urgent?" urgent":""}`}>{fmtTime(elapsed)}</span>
-      </div>
-      <Carousel cards={cards} resetKey={q.n}/>
+      <Carousel cards={cards} resetKey={q.n} header={header}/>
     </div>
   );
 }
