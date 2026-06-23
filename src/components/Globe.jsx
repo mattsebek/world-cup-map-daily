@@ -6,12 +6,12 @@ import WORLD from "../data/world.json";
 import CAPITALS from "../data/capitals.json";
 
 const W=600, H=600, CTR=[300,300], BASE=292, MINZ=0.9, MAXZ=5.5;
-const DEFAULT_ROT=[45,-12,0];
+const DEFAULT_ROT=[100,-38,0];
 
 function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
   const svgRef=useRef(null);
   const [rot,setRot]=useState(DEFAULT_ROT);
-  const [zoom,setZoom]=useState(1);
+  const [zoom,setZoom]=useState(2.2);
   const [hover,setHover]=useState(null);
 
   const rotRef=useRef(rot), zoomRef=useRef(zoom), phaseRef=useRef(phase), onGuessRef=useRef(onGuess);
