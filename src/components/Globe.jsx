@@ -11,7 +11,7 @@ const DEFAULT_ROT=[100,-38,0];
 function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
   const svgRef=useRef(null);
   const [rot,setRot]=useState(DEFAULT_ROT);
-  const [zoom,setZoom]=useState(2.0);
+  const [zoom,setZoom]=useState(3.0);
   const [hover,setHover]=useState(null);
 
   const rotRef=useRef(rot), zoomRef=useRef(zoom), phaseRef=useRef(phase), onGuessRef=useRef(onGuess);
@@ -97,7 +97,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     setZoom(z=>Math.min(MAXZ,z*1.4));
   };
 
-  useEffect(()=>{ if(phase==="guessing") animateTo(rotRef.current, 1); /* eslint-disable-next-line */ },[answerISO]);
+  useEffect(()=>{ if(phase==="guessing") animateTo(DEFAULT_ROT, 3.0); /* eslint-disable-next-line */ },[answerISO]);
 
   useEffect(()=>{
     if(phase!=="revealed" || !guessISO) return;
@@ -198,7 +198,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
       <div className="mapctrl">
         <button aria-label="Zoom in" onClick={()=>animateTo(rotRef.current, Math.min(MAXZ,zoomRef.current*1.5))}>+</button>
         <button aria-label="Zoom out" onClick={()=>animateTo(rotRef.current, Math.max(MINZ,zoomRef.current/1.5))}>−</button>
-        <button aria-label="Reset globe" onClick={()=>animateTo(DEFAULT_ROT,1)}>⟲</button>
+        <button aria-label="Reset globe" onClick={()=>animateTo(DEFAULT_ROT,3.0)}>⟲</button>
       </div>
 
       {phase==="guessing" && <div className="hint">Drag to spin · double-click to zoom · tap a country</div>}
