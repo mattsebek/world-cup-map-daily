@@ -80,7 +80,7 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 /* clue card + score float over the globe */
 .game-overlay{position:absolute;top:0;left:0;right:0;z-index:10;padding:12px 14px;pointer-events:none;display:flex;flex-direction:column;gap:8px;max-width:420px}
 .game-overlay>*{pointer-events:auto}
-.progress{display:flex;align-items:stretch;gap:8px;margin:0;width:100%;box-sizing:border-box}
+.progress{display:flex;align-items:stretch;justify-content:space-between;gap:8px;margin:0;width:100%;box-sizing:border-box}
 .prog-col{display:flex;flex-direction:column;gap:1px;background:rgba(6,6,26,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:6px 14px}
 .prog-col-right{align-items:flex-end}
 .prog-label{font-family:'Space Grotesk';font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
@@ -90,7 +90,7 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 /* — ClueCard — */
 .cluecard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 22px 10px;overflow:hidden;min-width:0}
 /* case header bar */
-.case-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.case-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;padding-left:5px;padding-top:5px}
 .case-label{font-family:'Space Grotesk';font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--turq)}
 .case-of{color:var(--muted);font-weight:500}
 .csb-timer{font-family:'Space Grotesk';font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--lime)}
@@ -105,7 +105,7 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 .carousel-card{padding:6px 0 8px;min-height:90px;display:flex;flex-direction:column;gap:6px;box-sizing:border-box}
 .cc-label{font-family:'Space Grotesk';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--turq);font-weight:700}
 .cc-label b{color:var(--coral);margin-right:4px}
-.cc-text{margin:0;font-size:15px;line-height:1.52;color:#e2e7f6;flex:1;word-break:break-word}
+.cc-text{margin:0;padding-left:5px;font-size:15px;line-height:1.52;color:#e2e7f6;flex:1;word-break:break-word}
 .carousel-clue{}
 .cc-swatches{display:flex;gap:12px;align-items:center;flex:1}
 .cc-swatch{width:40px;height:40px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.18);box-shadow:0 2px 8px rgba(0,0,0,.5);flex-shrink:0}
@@ -113,7 +113,7 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 .cc-player-body{display:flex;align-items:center;gap:12px;flex:1}
 .cc-player-img{width:60px;height:72px;border-radius:8px;object-fit:cover;object-position:top center;flex-shrink:0;background:rgba(255,255,255,.06)}
 .cc-player-name{font-family:'Space Grotesk';font-size:15px;font-weight:700;color:var(--white);line-height:1.3}
-.carousel-dots{display:flex;justify-content:flex-start;gap:5px;padding:6px 0 2px}
+.carousel-dots{display:flex;justify-content:center;gap:5px;padding:6px 0 2px}
 .cdot{width:6px;height:6px;border-radius:50%;border:none;background:rgba(255,255,255,.22);padding:0;cursor:pointer;transition:background .2s}
 .cdot.active{background:var(--turq);width:18px;border-radius:3px}
 
@@ -191,7 +191,7 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 .chip.turq{color:var(--turq);border-color:rgba(0,240,216,.35)}
 .restable{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:6px 0 16px}
 .rthead,.rtrow{display:grid;grid-template-columns:24px 1fr 1fr auto auto auto;gap:4px 14px;padding:10px 14px;align-items:center;font-size:13px}
-.ca{text-align:center}
+.ca{text-align:center;display:flex;justify-content:center;align-items:center}
 .rthead{background:rgba(255,255,255,.04);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-family:'Space Grotesk'}
 .rtrow{border-top:1px solid var(--line)}
 .ra{text-align:right;font-family:'Space Grotesk';font-weight:600}
