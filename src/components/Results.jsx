@@ -37,11 +37,11 @@ function Results({guesses, questions, totalTime, profile, reduced, onRegister, o
       <div className="rhero">
         <span className="reye">Mission Complete</span>
         <div className="rbig"><DistanceCounter value={finalScore} reduced={reduced} dur={1100}/></div>
-        <span className="rsub">Final Mission Score · lower is better</span>
+        <span className="rsub">Final Mission Score</span>
       </div>
 
       <div className="chips">
-        <span className="chip green">{exact} exact {exact===1?"trace":"traces"}</span>
+        <span className="chip green">{exact} correct {exact===1?"selection":"selections"}</span>
         <span className="chip turq">Agent Rank · {rank}</span>
         <span className="chip">Time · {fmtTime(totalTime)}</span>
         <span className="chip">Time Penalty · +{fmt(totalPenalty)}</span>
