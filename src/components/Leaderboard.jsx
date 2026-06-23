@@ -1,4 +1,5 @@
 import { fmt, todayStr } from "../lib/util.js";
+import { flagSrc } from "../lib/flags.js";
 
 function Leaderboard({entries, loading, meName, onBack}){
   const ranked=[...entries].sort((a,b)=>
@@ -25,7 +26,10 @@ function Leaderboard({entries, loading, meName, onBack}){
             {ranked.slice(0,20).map((e,i)=>(
               <div className={"btrow"+(e.name===meName?" me":"")} key={e.name+i}>
                 <span className="brk">{i===0?"🏆":i+1}</span>
-                <span className="bname">{e.name}{e.name===meName?" (you)":""}</span>
+                <span className="bname">
+                  {e.name}{e.name===meName?" (you)":""}
+                  {e.fav && flagSrc(e.fav) && <img src={flagSrc(e.fav)} alt="" className="bflag"/>}
+                </span>
                 <span className="ra">{fmt(e.finalScore??e.total)}</span>
                 <span className="ra hideS">{e.distance!=null?fmt(e.distance)+" mi":"—"}</span>
                 <span className="ra hideS">{e.time}</span>

@@ -219,7 +219,8 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 .btrow{border-top:1px solid var(--line)}
 .btrow.me{background:rgba(0,240,216,.09)}
 .brk{font-family:'Space Grotesk';font-weight:700;color:var(--muted)}
-.bname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.bflag{width:18px;height:13px;object-fit:cover;border-radius:2px;flex-shrink:0}
 .mepin{margin-top:10px;text-align:center;color:var(--turq);font-size:13px}
 .statcards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
 .sc{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}
