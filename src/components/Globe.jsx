@@ -80,7 +80,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
         if(moved>5 || phaseRef.current!=="guessing") return;
         // e.x/e.y are D3-normalized SVG viewBox coords — work for both mouse and touch
         const dx=e.x-CTR[0], dy=e.y-CTR[1];
-        const visRad=Math.min(BASE*zoomRef.current, 298);
+        const visRad=BASE*zoomRef.current;
         if(dx*dx+dy*dy > visRad*visRad){ document.dispatchEvent(new CustomEvent("wcmd-outside")); return; }
         const ll=projection.invert([e.x, e.y]);
         if(!ll){ document.dispatchEvent(new CustomEvent("wcmd-outside")); return; }

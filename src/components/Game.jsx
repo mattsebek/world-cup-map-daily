@@ -56,7 +56,7 @@ function Game({questions, onFinish, reduced}){
   }, []);
 
   useEffect(() => {
-    const h = () => { setToast("Tap a country to submit your trace."); setTimeout(() => setToast(null), 1400); };
+    const h = () => { setToast("Tap a country to submit your selection."); setTimeout(() => setToast(null), 1400); };
     document.addEventListener("wcmd-outside", h);
     return () => document.removeEventListener("wcmd-outside", h);
   }, []);
