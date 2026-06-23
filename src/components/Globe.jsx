@@ -32,7 +32,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     const ce=centroidById[iso]; return ce?{lat:ce[1],lng:ce[0],name:"—"}:null;
   },[centroidById]);
 
-  const rafRef=useRef(null), timerRef=useRef(null);
+  const rafRef=useRef(null), timerRef=useRef(null), spinRef=useRef(null), draggingRef=useRef(false);
   const animateTo=useCallback((tr, tz)=>{
     cancelAnimationFrame(rafRef.current);
     const sr=rotRef.current.slice(), sz=zoomRef.current;
@@ -71,18 +71,24 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
       return projection.invert([x,y]);
     };
     const drag=d3.drag()
-      .on("start",()=>{ moved=0; cancelAnimationFrame(rafRef.current); })
+      .on("start",()=>{ moved=0; draggingRef.current=true; cancelAnimationFrame(rafRef.current); })
       .on("drag",(e)=>{ moved+=Math.abs(e.dx)+Math.abs(e.dy);
         const k=0.26/Math.sqrt(zoomRef.current);
         setRot(p=>[p[0]+e.dx*k, Math.max(-89,Math.min(89,p[1]-e.dy*k)), 0]);
       })
       .on("end",(e)=>{
+        draggingRef.current=false;
         if(moved>5 || phaseRef.current!=="guessing") return;
-        // e.x/e.y are D3-normalized SVG viewBox coords — work for both mouse and touch
-        const dx=e.x-CTR[0], dy=e.y-CTR[1];
+        // Use raw client coords + screenToViewBox for correct xMidYMid slice hit detection on mobile
+        const src=e.sourceEvent;
+        const cx=src.changedTouches?src.changedTouches[0].clientX:src.clientX;
+        const cy=src.changedTouches?src.changedTouches[0].clientY:src.clientY;
+        const r=node.getBoundingClientRect();
+        const [vx,vy]=screenToViewBox(cx,cy,r);
+        const dx=vx-CTR[0], dy=vy-CTR[1];
         const visRad=BASE*zoomRef.current;
         if(dx*dx+dy*dy > visRad*visRad){ document.dispatchEvent(new CustomEvent("wcmd-outside")); return; }
-        const ll=projection.invert([e.x, e.y]);
+        const ll=projection.invert([vx,vy]);
         if(!ll){ document.dispatchEvent(new CustomEvent("wcmd-outside")); return; }
         const hit=WORLD.features.find(f=> f.id!=='ATA' && d3.geoContains(f, ll));
         if(hit) onGuessRef.current(hit.id);
@@ -96,6 +102,19 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     node.addEventListener("wheel", wheel, {passive:false});
     return ()=>{ sel.on(".drag",null); node.removeEventListener("wheel",wheel); cancelAnimationFrame(rafRef.current); clearTimeout(timerRef.current); };
   },[projection]);
+
+  // Soft auto-rotation during guessing phase
+  useEffect(()=>{
+    if(phase!=="guessing"){ cancelAnimationFrame(spinRef.current); return; }
+    let last=performance.now();
+    const tick=(now)=>{
+      const dt=now-last; last=now;
+      if(!draggingRef.current) setRot(r=>[r[0]+dt*0.004, r[1], r[2]]);
+      spinRef.current=requestAnimationFrame(tick);
+    };
+    spinRef.current=requestAnimationFrame(tick);
+    return ()=>cancelAnimationFrame(spinRef.current);
+  },[phase]);
 
   const onDouble=(e)=>{
     const node=svgRef.current, r=node.getBoundingClientRect();
