@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import WORLD from "../data/world-geo.js";
+import WORLD from "../data/world.json";
 
 function BackdropGlobe(){
   const ref=useRef(null);

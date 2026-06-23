@@ -2,7 +2,7 @@ import { resultLabel, fmt } from "../lib/util.js";
 import { flagSrc } from "../lib/flags.js";
 import DistanceCounter from "./DistanceCounter.jsx";
 import PARTICIPANTS from "../data/participants.json";
-import WORLD from "../data/world-geo.js";
+import WORLD from "../data/world.json";
 import CAPITALS from "../data/capitals.json";
 
 function RevealPanel({q, guessISO, distance, onNext, last, reduced}){

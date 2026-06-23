@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import * as d3 from "d3";
 import { PALETTE } from "../lib/palette.js";
 import { flagSrc, flagCode } from "../lib/flags.js";
-import WORLD from "../data/world-geo.js";
+import WORLD from "../data/world.json";
 import CAPITALS from "../data/capitals.json";
 
 const W=600, H=600, CTR=[300,300], BASE=292, MINZ=0.9, MAXZ=5.5;

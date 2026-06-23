@@ -3,7 +3,7 @@ import { bandEmoji, fmt, fmtTime, agentRank, todayStr } from "../lib/util.js";
 import { flagSrc } from "../lib/flags.js";
 import DistanceCounter from "./DistanceCounter.jsx";
 import PARTICIPANTS from "../data/participants.json";
-import WORLD from "../data/world-geo.js";
+import WORLD from "../data/world.json";
 
 function Results({guesses, questions, totalTime, profile, reduced, onRegister, onLeaderboard, onHome}){
   const totalDist   = guesses.reduce((s,g) => s + g.distance, 0);
