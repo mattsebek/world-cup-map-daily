@@ -86,7 +86,7 @@ export default function App(){
           <button onClick={()=>setOverlay("how")}>Rules</button>
         </nav>
       </header>
-      <main>
+      <main className={screen==="game"?"game-active":""}>
         {screen==="home" && <Home profile={profile} onPlay={()=>{ setQuestions(pickQuestions()); setScreen("game"); }} onHow={()=>setOverlay("how")} onBoard={()=>setScreen("board")} onStats={()=>setScreen("stats")}/>}
         {screen==="game" && questions && <Game questions={questions} onFinish={finish} reduced={reduced}/>}
         {screen==="results" && guesses && questions && <Results guesses={guesses} questions={questions} totalTime={totalTime} profile={profile} reduced={reduced}

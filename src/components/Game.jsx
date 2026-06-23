@@ -107,16 +107,14 @@ function Game({questions, onFinish, reduced}){
 
   return (
     <div className="game">
-      <div className="progress">
-        <span className="prog-label">Score</span>
-        <span className="prog-score">{miniScore.toLocaleString()}</span>
-      </div>
-      <div className="gamegrid">
-        <div className="leftpane">
+      <div className="game-map">
+        <Globe phase={phase} answerISO={q.answer} guessISO={cur?.guess} onGuess={onGuess} reduced={reduced}/>
+        <div className="game-overlay">
+          <div className="progress">
+            <span className="prog-label">Score</span>
+            <span className="prog-score">{miniScore.toLocaleString()}</span>
+          </div>
           <ClueCard q={q} miniScore={miniScore} elapsed={displaySec}/>
-        </div>
-        <div className="rightpane">
-          <Globe phase={phase} answerISO={q.answer} guessISO={cur?.guess} onGuess={onGuess} reduced={reduced}/>
         </div>
       </div>
       {phase === "revealed" && cur &&

@@ -11,7 +11,7 @@ const DEFAULT_ROT=[100,-38,0];
 function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
   const svgRef=useRef(null);
   const [rot,setRot]=useState(DEFAULT_ROT);
-  const [zoom,setZoom]=useState(3.0);
+  const [zoom,setZoom]=useState(2.0);
   const [hover,setHover]=useState(null);
 
   const rotRef=useRef(rot), zoomRef=useRef(zoom), phaseRef=useRef(phase), onGuessRef=useRef(onGuess);
@@ -56,11 +56,16 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     const node=svgRef.current;
     const sel=d3.select(node);
     let moved=0;
+    // Handles both square and portrait containers with xMidYMid slice rendering
+    const screenToViewBox=(sx,sy,r)=>{
+      const scale=Math.max(r.width/W, r.height/H);
+      const ox=(r.width-W*scale)/2, oy=(r.height-H*scale)/2;
+      return [(sx-r.left-ox)/scale, (sy-r.top-oy)/scale];
+    };
     const toLonLat=(sx,sy)=>{
       const r=node.getBoundingClientRect();
-      const x=(sx-r.left)*(W/r.width), y=(sy-r.top)*(H/r.height);
+      const [x,y]=screenToViewBox(sx,sy,r);
       const dx=x-CTR[0], dy=y-CTR[1];
-      // clamp to actual visible circle (SVG viewBox limits visible radius to ~298px)
       const visRad=Math.min(BASE*zoomRef.current, 298);
       if(dx*dx+dy*dy > visRad*visRad) return null;
       return projection.invert([x,y]);
@@ -90,7 +95,9 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
 
   const onDouble=(e)=>{
     const node=svgRef.current, r=node.getBoundingClientRect();
-    const x=(e.clientX-r.left)*(W/r.width), y=(e.clientY-r.top)*(H/r.height);
+    const scale=Math.max(r.width/W,r.height/H);
+    const ox=(r.width-W*scale)/2, oy=(r.height-H*scale)/2;
+    const x=(e.clientX-r.left-ox)/scale, y=(e.clientY-r.top-oy)/scale;
     const dx=x-CTR[0], dy=y-CTR[1], rad=BASE*zoomRef.current;
     if(dx*dx+dy*dy<=rad*rad){
       const ll=projection.invert([x,y]);
@@ -99,7 +106,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     setZoom(z=>Math.min(MAXZ,z*1.4));
   };
 
-  useEffect(()=>{ if(phase==="guessing") animateTo(DEFAULT_ROT, 3.0); /* eslint-disable-next-line */ },[answerISO]);
+  useEffect(()=>{ if(phase==="guessing") animateTo(DEFAULT_ROT, 2.0); /* eslint-disable-next-line */ },[answerISO]);
 
   useEffect(()=>{
     if(phase!=="revealed" || !guessISO) return;
@@ -156,7 +163,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
   return (
     <div className="mapwrap">
       <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`} className="globe" onDoubleClick={onDouble}
-           shapeRendering="geometricPrecision"
+           preserveAspectRatio="xMidYMid slice" shapeRendering="geometricPrecision"
            role="img" aria-label="Interactive 3D globe. Drag to rotate, double-click to zoom, tap a country to guess.">
         <defs>
           <radialGradient id="ocean" cx="38%" cy="32%" r="78%">
