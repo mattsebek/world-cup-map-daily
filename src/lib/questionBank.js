@@ -42,7 +42,7 @@ const BANK = {
   ],reveal:{title:"South Africa",capital:"Pretoria",body:"Bafana Bafana made history hosting 2010. Pretoria is the executive capital; Cape Town and Johannesburg are also major cities."}},
 
   KOR:{difficulty:"Medium",codename:"The Tiger Peninsula",primaryColor:"#C60C30",secondaryColor:"#FFFFFF",continent:"Asia",region:"East Asia",clues:[
-    {type:"player",text:"Its captain plays for a top-six Premier League club and is Asia's all-time leading international scorer."},
+    {type:"player",text:"Its captain plays in Major League Soccer and is Asia's all-time leading international scorer."},
     {type:"history",text:"Co-hosted the 2002 tournament and became the first — and still only — Asian team to reach the semifinals."},
     {type:"geography",text:"A peninsula in East Asia whose capital sits just 35 miles from a heavily fortified border."}
   ],reveal:{title:"South Korea",capital:"Seoul",body:"The Taeguk Warriors shocked the world in 2002, reaching the last four. Seoul, a tech powerhouse of 25 million, faces North Korea across the DMZ."}},

@@ -14,7 +14,7 @@ function RevealPanel({q, guessISO, distance, onNext, last, reduced}){
   return (
     <div className="reveal">
       <div className="revealhead" style={{["--lab"]:lab.c}}>
-        <span className="rlabel"><span className="case-closed-stamp">CASE CLOSED</span> {lab.t}</span>
+        <span className="rlabel"><span className="case-closed-stamp">CASE CLOSED</span></span>
         <span className="rdist"><DistanceCounter value={distance} reduced={reduced}/> <i>mi off trail</i></span>
       </div>
       <div className="answerline">

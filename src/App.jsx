@@ -95,7 +95,7 @@ export default function App(){
         {screen==="board" && <Leaderboard entries={board} meName={profile?.displayName} onBack={()=>setScreen(guesses?"results":"home")}/>}
         {screen==="stats" && <Stats history={history} onBack={()=>setScreen("home")}/>}
       </main>
-      <footer className="appfoot">Independent fan geography game · not affiliated with FIFA or any federation · geometry © Natural Earth (public domain)</footer>
+      <footer className="appfoot">Independent fan game · not affiliated with FIFA or any federation · geometry © Natural Earth (public domain)</footer>
       {overlay==="how" && <HowItWorks onClose={()=>setOverlay(null)}/>}
       {overlay==="register" && <Register existingNames={board.map(b=>b.name)} onClose={()=>setOverlay(null)} onDone={doRegister}/>}
     </div>
