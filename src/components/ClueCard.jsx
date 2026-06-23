@@ -104,34 +104,71 @@ function ClueTextCard({ clue }) {
 
 function Carousel({ cards, resetKey }) {
   const [idx, setIdx] = useState(0);
-  const touchStartX = useRef(null);
-  const touchStartY = useRef(null);
+  const [dragX, setDragX] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const viewportRef = useRef(null);
+  const startX = useRef(null);
+  const startY = useRef(null);
+  const isHoriz = useRef(null); // null=undecided, true=horiz, false=vert
 
-  // Reset to first card only when the question changes (resetKey = q.n)
   useEffect(() => { setIdx(0); }, [resetKey]);
 
   const prev = useCallback(() => setIdx(i => Math.max(0, i - 1)), []);
   const next = useCallback(() => setIdx(i => Math.min(cards.length - 1, i + 1)), [cards.length]);
 
-  const onTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
-  };
-  const onTouchEnd = (e) => {
-    if (touchStartX.current === null) return;
-    const dx = e.changedTouches[0].clientX - touchStartX.current;
-    const dy = e.changedTouches[0].clientY - touchStartY.current;
-    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 30) {
-      if (dx < 0) next(); else prev();
-    }
-    touchStartX.current = null;
+  // Non-passive touch listener so we can preventDefault on horizontal swipes
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const onStart = (e) => {
+      startX.current = e.touches[0].clientX;
+      startY.current = e.touches[0].clientY;
+      isHoriz.current = null;
+      setDragging(true);
+      setDragX(0);
+    };
+    const onMove = (e) => {
+      if (startX.current === null) return;
+      const dx = e.touches[0].clientX - startX.current;
+      const dy = e.touches[0].clientY - startY.current;
+      if (isHoriz.current === null) {
+        if (Math.abs(dx) < 5 && Math.abs(dy) < 5) return;
+        isHoriz.current = Math.abs(dx) > Math.abs(dy);
+      }
+      if (!isHoriz.current) return;
+      e.preventDefault();
+      setDragX(dx);
+    };
+    const onEnd = (e) => {
+      if (startX.current === null) return;
+      const dx = e.changedTouches[0].clientX - startX.current;
+      setDragging(false);
+      setDragX(0);
+      startX.current = null;
+      if (isHoriz.current && Math.abs(dx) > 40) {
+        if (dx < 0) next(); else prev();
+      }
+    };
+    el.addEventListener("touchstart", onStart, { passive: true });
+    el.addEventListener("touchmove", onMove, { passive: false });
+    el.addEventListener("touchend", onEnd, { passive: true });
+    return () => {
+      el.removeEventListener("touchstart", onStart);
+      el.removeEventListener("touchmove", onMove);
+      el.removeEventListener("touchend", onEnd);
+    };
+  }, [next, prev]);
+
+  const trackStyle = {
+    transform: `translateX(calc(${-idx * 100}% + ${dragX}px))`,
+    transition: dragging ? "none" : "transform 0.25s ease",
   };
 
   return (
-    <div className="carousel" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+    <div className="carousel">
       <button className="carousel-arrow left" onClick={prev} disabled={idx === 0} aria-label="Previous">‹</button>
-      <div className="carousel-viewport">
-        <div className="carousel-track" style={{transform:`translateX(${-idx*100}%)`, transition:"transform 0.25s ease"}}>
+      <div className="carousel-viewport" ref={viewportRef}>
+        <div className="carousel-track" style={trackStyle}>
           {cards.map((card, i) => (
             <div className="carousel-slide" key={i}>
               {card.kind === "clue"   && <ClueTextCard clue={card.data}/>}
