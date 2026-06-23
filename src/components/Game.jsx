@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import * as d3 from "d3";
 import { haversineMiles } from "../lib/util.js";
 import CAPITALS from "../data/capitals.json";
-import WORLD from "../data/world.json";
+import WORLD from "../data/world-geo.js";
 import Globe from "./Globe.jsx";
 import ClueCard from "./ClueCard.jsx";
 import RevealPanel from "./RevealPanel.jsx";
