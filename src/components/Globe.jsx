@@ -202,8 +202,8 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
           <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
             <feGaussianBlur stdDeviation="3.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
-          <clipPath id="flagclip"><rect x="6" y="-54" width="38" height="27" rx="3"/></clipPath>
-          <clipPath id="flagclipBig"><rect x="7" y="-72" width="48" height="34" rx="4"/></clipPath>
+          <clipPath id="flagclip"><rect x="-1" y="-54" width="38" height="27" rx="3"/></clipPath>
+          <clipPath id="flagclipBig"><rect x="-2" y="-72" width="48" height="34" rx="4"/></clipPath>
           <filter id="flagshadow" x="-60%" y="-60%" width="220%" height="220%">
             <feDropShadow dx="0" dy="1.6" stdDeviation="1.6" floodColor="#000" floodOpacity="0.55"/>
           </filter>
@@ -261,11 +261,11 @@ function FlagMarker({x,y,iso,accent,reduced,delay}){
           transition:reduced?"none":"transform .38s cubic-bezier(.2,1.3,.4,1), opacity .25s"}}>
         <circle cx="0" cy="0" r="3.5" fill={accent} stroke="#fff" strokeWidth="1"/>
         <line x1="0" y1="-1" x2="0" y2="-56" stroke="#fff" strokeWidth="2" strokeLinecap="round"/>
-        <rect x="6" y="-54" width="38" height="27" rx="3" fill="#0a1030" filter="url(#flagshadow)"/>
+        <rect x="-1" y="-54" width="38" height="27" rx="3" fill="#0a1030" filter="url(#flagshadow)"/>
         {src
-          ? <image href={src} x="6" y="-54" width="38" height="27" clipPath="url(#flagclip)" preserveAspectRatio="xMidYMid slice"/>
-          : <text x="25" y="-36" textAnchor="middle" fontSize="9" fontWeight="700" fill="#9AA3C7" fontFamily="'Space Grotesk',sans-serif">{code}</text>}
-        <rect x="6" y="-54" width="38" height="27" rx="3" fill="none" stroke={accent} strokeWidth="1.5"/>
+          ? <image href={src} x="-1" y="-54" width="38" height="27" clipPath="url(#flagclip)" preserveAspectRatio="xMidYMid slice"/>
+          : <text x="18" y="-36" textAnchor="middle" fontSize="9" fontWeight="700" fill="#9AA3C7" fontFamily="'Space Grotesk',sans-serif">{code}</text>}
+        <rect x="-1" y="-54" width="38" height="27" rx="3" fill="none" stroke={accent} strokeWidth="1.5"/>
       </g>
     </g>
   );
@@ -288,11 +288,11 @@ function Confetti({x,y,iso,reduced}){
       <g className={reduced?"":"flagpop"}>
         <circle cx="0" cy="0" r="4.5" fill={PALETTE.green} stroke="#fff" strokeWidth="1.5"/>
         <line x1="0" y1="-2" x2="0" y2="-72" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
-        <rect x="7" y="-72" width="48" height="34" rx="4" fill="#0a1030" filter="url(#flagshadow)"/>
+        <rect x="-2" y="-72" width="48" height="34" rx="4" fill="#0a1030" filter="url(#flagshadow)"/>
         {src
-          ? <image href={src} x="7" y="-72" width="48" height="34" clipPath="url(#flagclipBig)" preserveAspectRatio="xMidYMid slice"/>
-          : <text x="31" y="-50" textAnchor="middle" fontSize="13" fontWeight="700" fill="#9AA3C7" fontFamily="'Space Grotesk',sans-serif">{code}</text>}
-        <rect x="7" y="-72" width="48" height="34" rx="4" fill="none" stroke={PALETTE.green} strokeWidth="2"/>
+          ? <image href={src} x="-2" y="-72" width="48" height="34" clipPath="url(#flagclipBig)" preserveAspectRatio="xMidYMid slice"/>
+          : <text x="22" y="-50" textAnchor="middle" fontSize="13" fontWeight="700" fill="#9AA3C7" fontFamily="'Space Grotesk',sans-serif">{code}</text>}
+        <rect x="-2" y="-72" width="48" height="34" rx="4" fill="none" stroke={PALETTE.green} strokeWidth="2"/>
       </g>
     </g>
   );
