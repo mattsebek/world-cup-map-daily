@@ -78,7 +78,11 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
       })
       .on("end",(e)=>{
         if(moved>5 || phaseRef.current!=="guessing") return;
-        const ll=toLonLat(e.sourceEvent.clientX, e.sourceEvent.clientY);
+        // e.x/e.y are D3-normalized SVG viewBox coords — work for both mouse and touch
+        const dx=e.x-CTR[0], dy=e.y-CTR[1];
+        const visRad=Math.min(BASE*zoomRef.current, 298);
+        if(dx*dx+dy*dy > visRad*visRad){ document.dispatchEvent(new CustomEvent("wcmd-outside")); return; }
+        const ll=projection.invert([e.x, e.y]);
         if(!ll){ document.dispatchEvent(new CustomEvent("wcmd-outside")); return; }
         const hit=WORLD.features.find(f=> f.id!=='ATA' && d3.geoContains(f, ll));
         if(hit) onGuessRef.current(hit.id);

@@ -111,8 +111,14 @@ function Game({questions, onFinish, reduced}){
         <Globe phase={phase} answerISO={q.answer} guessISO={cur?.guess} onGuess={onGuess} reduced={reduced}/>
         <div className="game-overlay">
           <div className="progress">
-            <span className="prog-label">Score</span>
-            <span className="prog-score">{miniScore.toLocaleString()}</span>
+            <div className="prog-col">
+              <span className="prog-label">Score</span>
+              <span className="prog-score">{miniScore.toLocaleString()}</span>
+            </div>
+            <div className="prog-col prog-col-right">
+              <span className="prog-label">Time</span>
+              <span className={`prog-score prog-timer${displaySec>=240?" urgent":""}`}>{Math.floor(displaySec/60)}:{String(displaySec%60).padStart(2,"0")}</span>
+            </div>
           </div>
           <ClueCard q={q} miniScore={miniScore} elapsed={displaySec}/>
           {phase === "guessing" && <p className="hint-bar">Drag to spin · tap a country to guess</p>}

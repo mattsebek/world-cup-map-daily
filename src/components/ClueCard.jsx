@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { fmt, fmtTime } from "../lib/util.js";
+import { fmt } from "../lib/util.js";
 
 const CLUE_META = {
   player:   {label:"Player File",       icon:"◆"},
@@ -72,7 +72,6 @@ function PlayerCard({ iso }) {
   if (!name) return null;
   return (
     <div className="carousel-card carousel-player">
-      <div className="cc-label">Star Player</div>
       <div className="cc-player-body">
         {src && <img src={src} alt="" className="cc-player-img"/>}
         <span className="cc-player-name">{name.replace(/ \(.*\)/, "")}</span>
@@ -84,7 +83,6 @@ function PlayerCard({ iso }) {
 function FlagCard({ colors }) {
   return (
     <div className="carousel-card carousel-flag">
-      <div className="cc-label">Flag Colours</div>
       <div className="cc-swatches">
         {colors.map((c, i) => <div key={i} className="cc-swatch" style={{background:c}}/>)}
       </div>
@@ -93,10 +91,8 @@ function FlagCard({ colors }) {
 }
 
 function ClueTextCard({ clue }) {
-  const meta = CLUE_META[clue.type] || {label: clue.type, icon:"·"};
   return (
     <div className="carousel-card carousel-clue">
-      <div className="cc-label"><b>{meta.icon}</b> {meta.label}</div>
       <p className="cc-text">{clue.text}</p>
     </div>
   );
@@ -199,7 +195,6 @@ function ClueCard({q, miniScore, elapsed}){
   const header = (
     <div className="case-header">
       <span className="case-label">Case {q.n} <span className="case-of">of 5</span></span>
-      <span className={`csb-timer${urgent?" urgent":""}`}>{fmtTime(elapsed)}</span>
     </div>
   );
 
