@@ -32,7 +32,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     const ce=centroidById[iso]; return ce?{lat:ce[1],lng:ce[0],name:"—"}:null;
   },[centroidById]);
 
-  const rafRef=useRef(null), timerRef=useRef(null), spinRef=useRef(null), draggingRef=useRef(false);
+  const rafRef=useRef(null), timerRef=useRef(null), spinRef=useRef(null), draggingRef=useRef(false), hasInteractedRef=useRef(false);
   const animateTo=useCallback((tr, tz)=>{
     cancelAnimationFrame(rafRef.current);
     const sr=rotRef.current.slice(), sz=zoomRef.current;
@@ -71,7 +71,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
       return projection.invert([x,y]);
     };
     const drag=d3.drag()
-      .on("start",()=>{ moved=0; draggingRef.current=true; cancelAnimationFrame(rafRef.current); })
+      .on("start",()=>{ moved=0; draggingRef.current=true; hasInteractedRef.current=true; cancelAnimationFrame(rafRef.current); })
       .on("drag",(e)=>{ moved+=Math.abs(e.dx)+Math.abs(e.dy);
         const k=0.26/Math.sqrt(zoomRef.current);
         setRot(p=>[p[0]+e.dx*k, Math.max(-89,Math.min(89,p[1]-e.dy*k)), 0]);
@@ -109,7 +109,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     let last=performance.now();
     const tick=(now)=>{
       const dt=now-last; last=now;
-      if(!draggingRef.current) setRot(r=>[r[0]-dt*0.004, r[1], r[2]]);
+      if(!draggingRef.current && !hasInteractedRef.current) setRot(r=>[r[0]-dt*0.004, r[1], r[2]]);
       spinRef.current=requestAnimationFrame(tick);
     };
     spinRef.current=requestAnimationFrame(tick);
@@ -129,7 +129,7 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
     setZoom(z=>Math.min(MAXZ,z*1.4));
   };
 
-  useEffect(()=>{ if(phase==="guessing") animateTo(DEFAULT_ROT, 1.33); /* eslint-disable-next-line */ },[answerISO]);
+  useEffect(()=>{ if(phase==="guessing"){ hasInteractedRef.current=false; animateTo(DEFAULT_ROT, 1.33); } /* eslint-disable-next-line */ },[answerISO]);
 
   useEffect(()=>{
     if(phase!=="revealed" || !guessISO) return;
