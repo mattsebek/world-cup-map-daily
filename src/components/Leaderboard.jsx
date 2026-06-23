@@ -20,9 +20,9 @@ function Leaderboard({entries, meName, onBack}){
               <span className="ra hideS">Distance</span>
               <span className="ra hideS">Time</span>
             </div>
-            {ranked.slice(0,50).map((e,i)=>(
+            {ranked.slice(0,20).map((e,i)=>(
               <div className={"btrow"+(e.name===meName?" me":"")} key={e.name+i}>
-                <span className="brk">{i+1}</span>
+                <span className="brk">{i===0?"🏆":i+1}</span>
                 <span className="bname">{e.name}{e.name===meName?" (you)":""}</span>
                 <span className="ra">{fmt(e.finalScore??e.total)}</span>
                 <span className="ra hideS">{e.distance!=null?fmt(e.distance)+" mi":"—"}</span>
@@ -30,7 +30,7 @@ function Leaderboard({entries, meName, onBack}){
               </div>
             ))}
           </div>}
-      {meIdx>=50 && <div className="mepin">Your rank · #{meIdx+1}</div>}
+      {meIdx>=20 && <div className="mepin">Your rank · #{meIdx+1}</div>}
       <button className="textlink" onClick={onBack}>Back</button>
     </div>
   );

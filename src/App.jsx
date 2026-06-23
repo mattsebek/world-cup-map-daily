@@ -82,7 +82,6 @@ export default function App(){
         <button className="logo" onClick={()=>setScreen("home")}><span className="lmark"/>WCMD</button>
         <nav>
           <button onClick={()=>setScreen("board")} className={screen==="board"?"on":""}>Leaderboard</button>
-          <button onClick={()=>setScreen("stats")} className={screen==="stats"?"on":""}>Stats</button>
           <button onClick={()=>setOverlay("how")}>Rules</button>
         </nav>
       </header>
@@ -93,7 +92,6 @@ export default function App(){
             onRegister={(s)=>{ setPendingScore(s); setOverlay("register"); }}
             onLeaderboard={()=>setScreen("board")} onHome={()=>setScreen("home")}/>}
         {screen==="board" && <Leaderboard entries={board} meName={profile?.displayName} onBack={()=>setScreen(guesses?"results":"home")}/>}
-        {screen==="stats" && <Stats history={history} onBack={()=>setScreen("home")}/>}
       </main>
       <footer className="appfoot">Independent fan game · not affiliated with FIFA or any federation · geometry © Natural Earth (public domain)</footer>
       {overlay==="how" && <HowItWorks onClose={()=>setOverlay(null)}/>}
