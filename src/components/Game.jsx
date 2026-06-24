@@ -115,7 +115,7 @@ function Game({questions, onFinish, reduced}){
               <span className="prog-label">Score</span>
               <span className="prog-score">{miniScore.toLocaleString()}</span>
             </div>
-            <div className="prog-case">Case {qi+1} <span className="prog-case-of">of 5</span></div>
+            <div className="prog-case">Country {qi+1} <span className="prog-case-of">of 5</span></div>
             <div className="prog-col prog-col-right">
               <span className="prog-label">Time</span>
               <span className={`prog-score prog-timer${displaySec>=240?" urgent":""}`}>{Math.floor(displaySec/60)}:{String(displaySec%60).padStart(2,"0")}</span>
