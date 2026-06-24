@@ -35,7 +35,7 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 
 /* home */
 .home{position:relative;text-align:center;padding:30px 10px 20px;overflow:hidden}
-.home-stadium{position:absolute;inset:0;z-index:0;background-image:url('/stadium.jpg');background-size:cover;background-position:center 30%;opacity:0.18;mask-image:linear-gradient(to bottom,rgba(0,0,0,0.6) 0%,rgba(0,0,0,1) 40%,rgba(0,0,0,0.4) 80%,rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0.6) 0%,rgba(0,0,0,1) 40%,rgba(0,0,0,0.4) 80%,rgba(0,0,0,0) 100%)}
+.home-stadium{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background-image:url('/stadium.jpg');background-size:cover;background-position:center 30%;opacity:0.18;mask-image:linear-gradient(to bottom,rgba(0,0,0,0.6) 0%,rgba(0,0,0,1) 40%,rgba(0,0,0,0.4) 80%,rgba(0,0,0,0) 100%);-webkit-mask-image:linear-gradient(to bottom,rgba(0,0,0,0.6) 0%,rgba(0,0,0,1) 40%,rgba(0,0,0,0.4) 80%,rgba(0,0,0,0) 100%)}
 .badge26{width:58px;height:58px;margin:0 auto 14px;border-radius:14px;display:grid;place-items:center;position:relative;
   background:linear-gradient(135deg,var(--turq) 0 25%,var(--lime) 25% 50%,var(--coral) 50% 75%,var(--violet) 75% 100%);
   box-shadow:0 10px 30px -8px rgba(0,240,216,.5)}
