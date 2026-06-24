@@ -15,10 +15,10 @@ function Home({onPlay,onHow,onBoard,profile}){
         <button onClick={onBoard}>Leaderboard</button>
       </div>
       <div className="rulecard">
-        <div><b style={{color:PALETTE.turq}}>Review</b> each case file and follow the evidence</div>
-        <div><b style={{color:PALETTE.coral}}>Spin</b> the globe and tap the target country</div>
-        <div><b style={{color:PALETTE.lime}}>Score</b> = distance off trail + time penalty</div>
-        <div><b style={{color:PALETTE.green}}>Win</b> with the lowest final mission score</div>
+        <div><b style={{color:PALETTE.turq}}>Review</b> the country clues</div>
+        <div><b style={{color:PALETTE.coral}}>Spin</b> the globe and tap your guess</div>
+        <div><b style={{color:PALETTE.lime}}>Score</b> = distance off + time penalty</div>
+        <div><b style={{color:PALETTE.green}}>Win</b> with the lowest final score</div>
       </div>
     </div>
   );
