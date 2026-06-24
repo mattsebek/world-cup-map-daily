@@ -34,7 +34,7 @@ function RevealPanel({q, guessISO, distance, onNext, last, reduced}){
         {exact && <div className="guessline exact inline">✓ Exact</div>}
       </div>
       <p className="learn">{q.reveal.body}</p>
-      <button className="next" onClick={onNext}>{last ? "Mission Report →" : "Next Case →"}</button>
+      <button className="next" onClick={onNext}>{last ? "Mission Report →" : "Next Country →"}</button>
     </div>
   );
 }

@@ -36,6 +36,16 @@ export async function fetchTodayBoard() {
 
 export async function submitScore({ email, displayName, favoriteCountryId }, score) {
   const email_hash = await hashEmail(email);
+
+  // Only update if this score beats the existing best
+  const { data: existing } = await supabase
+    .from("daily_scores")
+    .select("final_score")
+    .eq("email_hash", email_hash)
+    .maybeSingle();
+
+  if (existing && existing.final_score <= score.finalScore) return;
+
   const { error } = await supabase.from("daily_scores").upsert({
     date: today(),
     display_name: displayName,
@@ -47,7 +57,7 @@ export async function submitScore({ email, displayName, favoriteCountryId }, sco
     worst: score.worst,
     completion_sec: score.completionSec,
     fav_country: favoriteCountryId || null,
-  }, { onConflict: "date,email_hash" });
+  }, { onConflict: "email_hash" });
   if (error) throw error;
 }
 
