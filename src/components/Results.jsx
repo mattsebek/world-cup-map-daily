@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fmt, fmtTime, agentRank, todayStr } from "../lib/util.js";
+import { bandEmoji, fmt, fmtTime, agentRank, todayStr } from "../lib/util.js";
 import { flagSrc } from "../lib/flags.js";
 import { generateShareImage } from "../lib/shareImage.js";
 import DistanceCounter from "./DistanceCounter.jsx";
