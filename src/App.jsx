@@ -77,7 +77,7 @@ export default function App(){
         </nav>
       </header>
       <main className={screen==="game"?"game-active":""}>
-        {screen==="home" && <Home profile={profile} onPlay={()=>{ setQuestions(pickQuestions()); setScreen("game"); }} onHow={()=>setOverlay("how")} onBoard={()=>setScreen("board")}/>}
+        {screen==="home" && <Home profile={profile} onPlay={()=>{ setQuestions(pickQuestions()); setScreen("game"); }} onHow={()=>setOverlay("how")} onBoard={()=>{ setScreen("board"); }}/>}
         {screen==="game" && questions && <Game questions={questions} onFinish={finish} reduced={reduced}/>}
         {screen==="results" && guesses && questions && <Results guesses={guesses} questions={questions} totalTime={totalTime} profile={profile} reduced={reduced}
             onRegister={(s)=>{ setPendingScore(s); setOverlay("register"); }}
