@@ -1,7 +1,7 @@
 import { fmt, fmtTime } from "./util.js";
 import { flagSrc } from "./flags.js";
 
-const W = 1080, H = 1200;
+const W = 1080, H = 1080;
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -73,7 +73,7 @@ export async function generateShareImage(guesses, questions, totalTime, finalSco
 
   ctx.fillStyle = "rgba(255,255,255,0.45)";
   ctx.font = "32px 'Arial', sans-serif";
-  ctx.fillText("Final Score  ·  Lower is better", W / 2, 385);
+  ctx.fillText("Final Score", W / 2, 385);
 
   // Divider
   ctx.strokeStyle = "rgba(0,240,216,0.25)";
@@ -138,14 +138,6 @@ export async function generateShareImage(guesses, questions, totalTime, finalSco
   ctx.font = "34px 'Arial', sans-serif";
   ctx.fillText(`${exact} exact  ·  Time ${fmtTime(totalTime)}`, W / 2, cardY + cardH + 66);
 
-  // ── Bottom divider + URL ──
-  ctx.strokeStyle = "rgba(255,255,255,0.08)";
-  ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(W * 0.12, H - 108); ctx.lineTo(W * 0.88, H - 108); ctx.stroke();
-
-  ctx.fillStyle = "rgba(0,240,216,0.55)";
-  ctx.font = "bold 32px 'Arial', sans-serif";
-  ctx.fillText("worldcupmapda.ily", W / 2, H - 56);
 
   return new Promise(resolve => canvas.toBlob(resolve, "image/png"));
 }
