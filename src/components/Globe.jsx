@@ -96,12 +96,51 @@ function Globe({ phase, answerISO, guessISO, onGuess, reduced }){
         else document.dispatchEvent(new CustomEvent("wcmd-outside"));
       });
     sel.call(drag);
+
     const wheel=(e)=>{ e.preventDefault();
       const f=e.deltaY<0?1.12:1/1.12;
       setZoom(z=>Math.max(MINZ,Math.min(MAXZ,z*f)));
     };
     node.addEventListener("wheel", wheel, {passive:false});
-    return ()=>{ sel.on(".drag",null); node.removeEventListener("wheel",wheel); cancelAnimationFrame(rafRef.current); clearTimeout(timerRef.current); };
+
+    // Pinch-to-zoom: track two-finger distance and map to zoom
+    let pinchDist=null;
+    let pinchZoom=null;
+    const pinchStart=(e)=>{
+      if(e.touches.length!==2) return;
+      e.preventDefault();
+      const [t0,t1]=e.touches;
+      pinchDist=Math.hypot(t1.clientX-t0.clientX, t1.clientY-t0.clientY);
+      pinchZoom=zoomRef.current;
+      // Suppress D3 drag during pinch
+      draggingRef.current=true;
+      hasInteractedRef.current=true;
+      cancelAnimationFrame(rafRef.current);
+    };
+    const pinchMove=(e)=>{
+      if(e.touches.length!==2 || pinchDist===null) return;
+      e.preventDefault();
+      const [t0,t1]=e.touches;
+      const dist=Math.hypot(t1.clientX-t0.clientX, t1.clientY-t0.clientY);
+      const newZoom=Math.max(MINZ, Math.min(MAXZ, pinchZoom*(dist/pinchDist)));
+      setZoom(newZoom);
+    };
+    const pinchEnd=(e)=>{
+      if(e.touches.length<2){ pinchDist=null; pinchZoom=null; draggingRef.current=false; }
+    };
+    node.addEventListener("touchstart", pinchStart, {passive:false});
+    node.addEventListener("touchmove",  pinchMove,  {passive:false});
+    node.addEventListener("touchend",   pinchEnd,   {passive:true});
+
+    return ()=>{
+      sel.on(".drag",null);
+      node.removeEventListener("wheel",wheel);
+      node.removeEventListener("touchstart",pinchStart);
+      node.removeEventListener("touchmove",pinchMove);
+      node.removeEventListener("touchend",pinchEnd);
+      cancelAnimationFrame(rafRef.current);
+      clearTimeout(timerRef.current);
+    };
   },[projection]);
 
   // Soft auto-rotation during guessing phase
