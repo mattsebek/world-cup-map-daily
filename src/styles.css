@@ -88,6 +88,8 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 .prog-score{font-family:'Space Grotesk';font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--white)}
 .prog-timer{color:#f5d020}
 .prog-timer.urgent{color:var(--coral);animation:pulse-clock 1s ease-in-out infinite}
+.prog-case{font-family:'Space Grotesk';font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--white);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}
+.prog-case-of{color:var(--muted);font-weight:500}
 /* — ClueCard — */
 .cluecard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 22px 10px;overflow:hidden;min-width:0}
 /* case header bar */
@@ -99,10 +101,12 @@ main.game-active{padding:0;max-width:100%;flex:1;display:flex;flex-direction:col
 @keyframes pulse-clock{0%,100%{opacity:1}50%{opacity:.6}}
 
 /* — Carousel — */
-.carousel{min-width:0;flex:1}
+.carousel{min-width:0;flex:1;position:relative}
 .carousel-viewport{overflow:hidden;min-width:0}
 .carousel-track{display:flex;width:100%;will-change:transform}
-.carousel-slide{min-width:100%;width:100%;flex-shrink:0;box-sizing:border-box;overflow:hidden}
+.carousel-slide{min-width:100%;width:100%;flex-shrink:0;box-sizing:border-box;overflow:hidden;padding-right:28px}
+.carousel-next{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.55);font-size:22px;line-height:1;padding:4px 2px;cursor:pointer;pointer-events:auto}
+.carousel-next:hover{color:var(--white)}
 .carousel-card{padding:6px 0 8px;min-height:90px;display:flex;flex-direction:column;gap:6px;box-sizing:border-box}
 .cc-label{font-family:'Space Grotesk';font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--turq);font-weight:700}
 .cc-label b{color:var(--coral);margin-right:4px}

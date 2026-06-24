@@ -19,7 +19,6 @@ export async function fetchTodayBoard() {
   const { data, error } = await supabase
     .from("daily_scores")
     .select("display_name,final_score,distance,time_penalty,exact_count,worst,completion_sec,fav_country")
-    .eq("date", today())
     .order("final_score", { ascending: true })
     .limit(20);
   if (error) throw error;

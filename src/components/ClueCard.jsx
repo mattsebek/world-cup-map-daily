@@ -179,6 +179,9 @@ function Carousel({ cards, resetKey, header }) {
           ))}
         </div>
       </div>
+      {idx < cards.length - 1 && (
+        <button className="carousel-next" onClick={next} aria-label="Next clue">›</button>
+      )}
     </div>
   );
 }
@@ -194,7 +197,7 @@ function ClueCard({q, miniScore, elapsed}){
 
   const header = (
     <div className="case-header">
-      <span className="case-label">Case {q.n} <span className="case-of">of 5</span></span>
+      <span className="case-label">Find and select the right country</span>
     </div>
   );
 
