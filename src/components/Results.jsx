@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { bandEmoji, fmt, fmtTime, agentRank, todayStr } from "../lib/util.js";
+import { fmt, fmtTime, agentRank, todayStr } from "../lib/util.js";
 import { flagSrc } from "../lib/flags.js";
+import { generateShareImage } from "../lib/shareImage.js";
 import DistanceCounter from "./DistanceCounter.jsx";
 import PARTICIPANTS from "../data/participants.json";
 import WORLD from "../data/world.json";
@@ -27,8 +28,24 @@ function Results({guesses, questions, totalTime, profile, reduced, onRegister, o
   ].join("\n");
 
   const [copied, setCopied] = useState(false);
+  const [sharing, setSharing] = useState(false);
   const share = async () => {
-    if (navigator.share) { try { await navigator.share({title:"World Cup Map Daily", text:shareText}); return; } catch {} }
+    setSharing(true);
+    try {
+      const blob = await generateShareImage(guesses, questions, totalTime, finalScore);
+      const file = new File([blob], "wcmd-result.png", { type: "image/png" });
+      // Try native share with image (iOS Safari, Android Chrome)
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        try { await navigator.share({ files: [file], title: "World Cup Geo Challenge" }); return; } catch(e) { if (e.name === "AbortError") return; }
+      }
+      // Try clipboard image
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+        setCopied(true); setTimeout(() => setCopied(false), 2000); return;
+      } catch {}
+    } catch(e) { console.error("share image failed", e); }
+    finally { setSharing(false); }
+    // Text fallback
     try { await navigator.clipboard.writeText(shareText); setCopied(true); setTimeout(()=>setCopied(false),1500); } catch {}
   };
 
@@ -85,7 +102,7 @@ function Results({guesses, questions, totalTime, profile, reduced, onRegister, o
       </div>
 
       <div className="sharebar">
-        <button className="ghost" onClick={share}>{copied ? "Copied ✓" : "Share result"}</button>
+        <button className="ghost" onClick={share} disabled={sharing}>{copied ? "Copied ✓" : sharing ? "Generating…" : "Share result"}</button>
         <button className="ghost" onClick={onLeaderboard}>Global leaderboard</button>
       </div>
 
