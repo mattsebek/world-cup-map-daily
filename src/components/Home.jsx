@@ -4,6 +4,7 @@ import BackdropGlobe from "./BackdropGlobe.jsx";
 function Home({onPlay,onHow,onBoard,profile}){
   return (
     <div className="home">
+      <div className="home-stadium" aria-hidden="true"/>
       <BackdropGlobe/>
       <div className="badge26" aria-hidden="true"><span>26</span></div>
       <div className="wordmark"><span className="wm1">World Cup</span><span className="wm2">Geo Challenge</span></div>
