@@ -11,7 +11,8 @@ const today = () => {
 };
 
 async function hashEmail(email) {
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(email.trim().toLowerCase()));
+  const val = email ? email.trim().toLowerCase() : "anonymous";
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(val));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
